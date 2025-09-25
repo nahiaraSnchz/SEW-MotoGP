@@ -32,9 +32,10 @@ header {
     text-decoration: underline;
 }
 
+
 /*Especificidad 003 */
 header h1 a {
-    color: white;  /* Advertencia: Hereda color de fondo de header */
+    color: black;  /* Advertencia: Hereda color de fondo de header */
 }
 
 /*Especificidad 013 */
@@ -50,7 +51,7 @@ header a {
 
 /*Especificidad 012 */
 header a:visited {
-    color: #c1effd;   /* Advertencia: Hereda color de fondo de header */
+    color: white;   /* Advertencia: Hereda color de fondo de header */
 }
 
 h2{
@@ -59,7 +60,7 @@ h2{
 
 /*Especificidad 001 */
 a {
-    color: #3498db;    /* Advertencia: Hereda color de fondo de body */
+    color: #0000ff;    /* Advertencia: Hereda color de fondo de body */
     text-decoration: none; /* Sin subrayado */
 }
 
