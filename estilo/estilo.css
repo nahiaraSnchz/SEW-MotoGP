@@ -4,6 +4,21 @@
 
 /* 
     ESTILOS GENERALES DEL PROYECTO MOTOGP-DESKTOP
+    
+    - Enlaces: #0000ff
+    - Enlaces usados: #050A30
+    - Titulos: #000C66
+    - Azul oscuro oscuro: #050A30
 */
+
+body {
+    font-family: Calibri, sans-serif, Arial;
+}
+
+h1 a {
+    color: #000C66
+}
+
+
   
   
