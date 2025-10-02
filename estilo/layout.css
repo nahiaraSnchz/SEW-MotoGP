@@ -44,7 +44,7 @@ nav {
 
     
     body > table, section > table  {
-      width: 100%;
+      width: 80%;
       table-layout: fixed; /* para evitar que crezca más del ancho */
     }
   
