@@ -35,7 +35,7 @@ header {
 
 /*Especificidad 003 */
 header h1 a {
-    color: black;  /* Advertencia: Hereda color de fondo de header */
+    color: white;  /* Advertencia: Hereda color de fondo de header */
 }
 
 /*Especificidad 013 */
