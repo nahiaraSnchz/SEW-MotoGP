@@ -1,0 +1,44 @@
+/*Especificidad 001 */
+header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+/*Especificidad 001 */
+nav {
+    display: flex;
+    flex-direction: row; /* enlaces en fila */
+    gap: 1em;            /* espacio entre enlaces */
+    padding-bottom: 1em;
+}
+
+
+@media (min-width: 320px) and (max-width: 799px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start; 
+    }
+  
+    header h1 {
+      margin-bottom: 0.5em;
+    }
+  
+    nav {
+      flex-direction: column;
+      gap: 0.5em;
+      padding-bottom: 0;
+    }
+  
+    nav a {
+      display: block;
+    }
+  
+    body > p:first-of-type{
+        display: none;
+    }
+  }

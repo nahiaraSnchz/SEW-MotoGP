@@ -27,6 +27,8 @@ header {
     text-align: left;
 }
 
+
+
 /*Especificidad 010 */
 .active {
     text-decoration: underline;
@@ -38,6 +40,7 @@ header h1 a {
     color: white;  /* Advertencia: Hereda color de fondo de header */
 }
 
+
 /*Especificidad 013 */
 header h1 a:visited {
     color: white;  /* Advertencia: Hereda color de fondo de header */
@@ -46,12 +49,12 @@ header h1 a:visited {
 /*Especificidad 002 */
 header a {
     color: white;   /* Advertencia: Hereda color de fondo de header */
-    text-decoration: none;  
+    text-decoration-line: none;  
 }
 
-/*Especificidad 012 */
-header a:visited {
-    color: white;   /* Advertencia: Hereda color de fondo de header */
+/*Especificidad 013 */
+header nav a:visited {
+    color: #d9cccc;   /* Advertencia: Hereda color de fondo de header */
 }
 
 h2{
@@ -61,7 +64,7 @@ h2{
 /*Especificidad 001 */
 a {
     color: #0000ff;    /* Advertencia: Hereda color de fondo de body */
-    text-decoration: none; /* Sin subrayado */
+    /*text-decoration-line: none;*/ /* Sin subrayado */
 }
 
 /*Especificidad 011 */
@@ -82,6 +85,7 @@ header + p:first-of-type {
     padding-top: 1em;
     padding-left: 0.5em;
 }
+
 
 
   
