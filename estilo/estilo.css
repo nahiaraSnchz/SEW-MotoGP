@@ -13,6 +13,7 @@
     - Rojo: #F51720
 */
 
+/*Especificidad 001 */
 body {
     font-family: "Calibri", sans-serif, Arial;
     /*background-color: #f2f9fd;*/
@@ -20,13 +21,13 @@ body {
     color: black;
 }
 
+/*Especificidad 001 */
 header {
     background-color: #222222d8;
     color: white;
     padding: 1rem;
     text-align: left;
 }
-
 
 
 /*Especificidad 010 */
@@ -57,10 +58,12 @@ header nav a:visited {
     color: #d9cccc;   /* Advertencia: Hereda color de fondo de header */
 }
 
+/*Especificidad 001 */
 h2{
     color: #F51720;  /* Advertencia: Hereda color de fondo de body */
 }
 
+/*Especificidad 001 */
 h3 {
     color: #000C66;  /* Advertencia: Hereda color de fondo de body */
 }
