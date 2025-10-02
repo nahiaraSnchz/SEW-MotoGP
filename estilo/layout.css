@@ -41,4 +41,23 @@ nav {
     body > p:first-of-type{
         display: none;
     }
+
+    
+    body > table, section > table  {
+      width: 100%;
+      table-layout: fixed; /* para evitar que crezca más del ancho */
+    }
+  
+    table {
+      width: 100%;
+      table-layout: fixed;
+    }
+  
+    table th, table td {
+      padding: 0.5em;
+      word-wrap: break-word; /* para cortar texto largo */
+    }
+        
+
+    
   }
