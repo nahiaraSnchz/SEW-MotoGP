@@ -58,13 +58,16 @@ header nav a:visited {
 }
 
 h2{
-    color: #F51720;
+    color: #F51720;  /* Advertencia: Hereda color de fondo de body */
+}
+
+h3 {
+    color: #000C66;  /* Advertencia: Hereda color de fondo de body */
 }
 
 /*Especificidad 001 */
 a {
     color: #0000ff;    /* Advertencia: Hereda color de fondo de body */
-    /*text-decoration-line: none;*/ /* Sin subrayado */
 }
 
 /*Especificidad 011 */
@@ -86,6 +89,35 @@ header + p:first-of-type {
     padding-left: 0.5em;
 }
 
+/*Especificidad 001*/
+ul{
+    list-style-type: square;
+}
 
+/*Especificidad 001*/
+ol{
+    list-style-type: decimal;
+}
+
+dl dt{
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+/*Especificidad 002*/
+table caption{
+    text-decoration: underline;
+}
+
+/*Especificidad 002*/
+table th{
+    padding: 0.8em;
+    font-weight: bolder;
+}
+
+/*Especificidad 002*/
+table td{
+    text-align: center;
+}
 
   

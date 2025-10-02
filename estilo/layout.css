@@ -5,8 +5,8 @@ header {
     flex-wrap: wrap;
     align-items: flex-end;
     justify-content: space-between;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 1em; /*Redefinición de padding-left*/
+    padding-right: 1em; /*Redefinición de padding-right*/
 }
 
 /*Especificidad 001 */
@@ -20,8 +20,8 @@ nav {
 
 @media (min-width: 320px) and (max-width: 799px) {
     header {
-      flex-direction: column;
-      align-items: flex-start; 
+      flex-direction: column; /*Redefinición de flex-direction*/
+      align-items: flex-start; /*Redefinición de align-items*/
     }
   
     header h1 {
@@ -29,9 +29,9 @@ nav {
     }
   
     nav {
-      flex-direction: column;
-      gap: 0.5em;
-      padding-bottom: 0;
+      flex-direction: column; /*Redefinición de flex direction*/
+      gap: 0.5em; /*Redefinición de gap*/
+      padding-bottom: 0; /*Redefinición de padding-bottom*/
     }
   
     nav a {
