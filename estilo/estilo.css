@@ -112,15 +112,6 @@ table caption{
     text-decoration: underline;
 }
 
-/*Especificidad 002*/
-table th{
-    padding: 0.8em;
-    font-weight: bolder;
-}
 
-/*Especificidad 002*/
-table td{
-    text-align: center;
-}
 
   
