@@ -1,49 +1,45 @@
-<!ELEMENT circuito (longitudCircuito, anchura, fecha2025, hora, vueltas, patrocinador, referencias, galeria, videos, puntoOrigen, puntos, vencedor, tresClasificados)>
-<!ATTLIST circuito
-    nombre CDATA #REQUIRED
-    ciudad CDATA #REQUIRED
-    pais CDATA #REQUIRED
->
+<!ELEMENT circuito (longitudCircuito, anchura, fecha2025, hora, vueltas, patrocinador, referencias, foto+, video+, puntoOrigen, puntos, vencedor, tresClasificados)>
 
 <!ELEMENT longitudCircuito (#PCDATA)>
-<!ATTLIST longitudCircuito
-    unidades CDATA #REQUIRED
->
-
 <!ELEMENT anchura (#PCDATA)>
-<!ATTLIST anchura
-    unidades CDATA #REQUIRED
->
-
 <!ELEMENT fecha2025 (#PCDATA)>
 <!ELEMENT hora (#PCDATA)>
 <!ELEMENT vueltas (#PCDATA)>
 <!ELEMENT patrocinador (#PCDATA)>
-
 <!ELEMENT referencias (referencia+)>
 <!ELEMENT referencia (#PCDATA)>
-
-<!ELEMENT galeria (foto*)>
 <!ELEMENT foto (#PCDATA)>
-
-<!ELEMENT videos (video*)>
 <!ELEMENT video (#PCDATA)>
-
 <!ELEMENT puntoOrigen (coordenada)>
 <!ELEMENT coordenada (latitud, longitud, altitud)>
 <!ELEMENT latitud (#PCDATA)>
 <!ELEMENT longitud (#PCDATA)>
 <!ELEMENT altitud (#PCDATA)>
-
 <!ELEMENT puntos (punto+)>
 <!ELEMENT punto (distancia, coordenada, sector)>
 <!ELEMENT distancia (#PCDATA)>
-<!ATTLIST distancia
-    unidades CDATA #REQUIRED
->
+
 <!ELEMENT sector (#PCDATA)>
 
 <!ELEMENT vencedor (#PCDATA)>
 
 <!ELEMENT tresClasificados (clasificado, clasificado, clasificado)>
 <!ELEMENT clasificado (#PCDATA)>
+
+<!ATTLIST circuito
+    nombre CDATA #REQUIRED
+    ciudad CDATA #REQUIRED
+    pais CDATA #REQUIRED
+>
+
+<!ATTLIST longitudCircuito
+    unidades CDATA #REQUIRED
+>
+
+<!ATTLIST distancia
+    unidades CDATA #REQUIRED
+>
+
+<!ATTLIST anchura
+    unidades CDATA #REQUIRED
+>

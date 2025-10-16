@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE circuito SYSTEM "circuito.dtd">
 
-<circuito nombre="TT Circuit Assen" ciudad="Ciudad de Assen" pais="Países Bajos">
-    <longitudCircuito unidades="km">4,542</longitudCircuito>
+<circuito 
+xmlns="http://www.uniovi.es"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.uniovi.es circuito.xsd"
+
+nombre="TT Circuit Assen" ciudad="Ciudad de Assen" pais="Paises Bajos" >
+    <longitudCircuito unidades="km">4.542</longitudCircuito>
     <anchura unidades="m">11</anchura>
-    <fecha2025>29 de junio de 2025</fecha2025>
-    <hora>14:00 horas</hora>
-    <vueltas>26 vueltas</vueltas>
+    <fecha2025>2025-06-29</fecha2025>
+    <hora>14:00:00</hora>
+    <vueltas>26</vueltas>
     <patrocinador>Two Wheels for Life</patrocinador>
+
     <referencias>
         <referencia>https://www.motogp.com/es/calendar/2025/event/netherlands/9919f76f-48cc-4dd6-b752-6b94d0ffd5f5?tab=overview</referencia>
         <referencia>https://www.eurosport.es/motociclismo/gran-premio-de-holanda/2025/live-carrera_mtc1565371/live-commentary.shtml</referencia>
@@ -36,7 +41,7 @@
             <sector>1</sector>
         </punto>
         <punto>
-            <distancia unidades="m">407.14 m</distancia>
+            <distancia unidades="m">407.14</distancia>
             <coordenada>
                 <latitud>52.9645838</latitud>
                 <longitud>6.5289054</longitud>
