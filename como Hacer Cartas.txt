@@ -1,0 +1,22 @@
+<main>
+	<article>
+		<h3>Memory Card</h3>
+		<img src="..." alt="..." />
+	</article>
+	
+	x12 veces (cartas)
+
+</main>
+
+
+
+main {
+	display: grid
+	grid-template-columns: repeat(4,1fr)
+	grid-template-rows: 
+	grid-gap: 2vw;
+}
+
+main h2 {
+	grid-column: 
+}

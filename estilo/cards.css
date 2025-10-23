@@ -1,0 +1,51 @@
+/* MotoGP-Desktop*/
+/* Hoja de estilo para el juego de memoria con cartas */
+
+/* Regla con el estilo general para las tarjetas del juego */
+/* especificidad: 002 */
+main article {
+    width: 20vw;
+    height: 20em;
+    position: relative;
+    transform: scale(1);
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform .5s;
+    box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,.3);
+}
+
+/* Regla con la transformación que permite girar la carta cuando se le pone el data-state al valor flip */
+/* especificidad: 012 */
+main article[data-state=flip] {
+    transform: rotateY(180deg);
+}
+
+/* Reglas con los estilos generales para el encabezado y la imagen de la carta */
+/* especificidad: 002 */
+/* especificidad: 002 */
+article h3,
+article img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 0.5em;
+    background: #050A30;
+    backface-visibility: hidden;
+}
+
+/* Regla para centrar el texto "Memory Card" vertical y horizontalmente en cada carta */
+/* especificidad: 002 */
+article h3 {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+/* Regla para rotar las imágenes y que se vean correctamente cuando se giran las cartas */
+/* especificidad: 002 */
+article img {
+    transform: rotateY(180deg);
+}

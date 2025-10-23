@@ -1,0 +1,39 @@
+main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas iguales */
+    grid-template-rows: auto repeat(3, 1fr); /* primera fila automática para el título, luego 3 filas iguales para cartas */
+    grid-gap: 2vw;
+    justify-items: center;
+    align-items: center;
+}
+
+
+main h2 {
+    grid-column: 1 / -1; /* ocupa desde la primera hasta la última columna */
+    text-align: center;
+}
+
+
+main article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 0.1em solid #ccc;
+    border-radius: 0.5em;
+    background-color: #f9f9f9;
+}
+
+
+@media (max-width: 799px) {
+    main {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto repeat(6, 1fr);
+        grid-gap: 1em;
+    }
+
+    main article {
+        width: 7.5em;
+        height: 7.5em;
+    }
+}

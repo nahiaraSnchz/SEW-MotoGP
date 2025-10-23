@@ -13,6 +13,7 @@
      <!-- Enlaces -->
      <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
      <link rel="stylesheet" type="text/css" href="estilo/layout.css" />
+     <script src="js/Ciudad.js"></script>
 
      <!--FavIcon-->
     <link rel="icon" href="multimedia/favicon.ico" />
@@ -41,6 +42,16 @@
     <p>Estas en: <a href="piloto.html" title="Página Inicio">Inicio</a> | <strong>Meteorología</strong></p>
 
     <h2>Meteorología del circuito</h2>
-    <p>En desarrollo</p>
+    
+    <h3>Información de la ciudad del circuito</h3>
+    <script>
+        var ciudad = new Ciudad("Ciudad de Assen", "Países Bajos", "assenés");
+        ciudad.rellenarDatosSecundarios(66215, 52.9927553, 6.5642269, 14.2866527);
+        document.write("El circuito está cerca de la " + ciudad.getNombreCiudad() + ", en " + ciudad.getPais());
+        document.write(ciudad.getInformacion());
+        document.write("<h4>Coordenadas de la ciudad:</h4>");
+        ciudad.mostrarCoordenadas();
+    </script>
+
 </body>
 </html>
