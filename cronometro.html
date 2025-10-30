@@ -4,15 +4,16 @@
 <head>
     <!-- Datos que describen el documento -->
     <meta charset="UTF-8" />
-    <title>MotoGP-Juegos</title>
+    <title>MotoGP-Cronometro</title>
     <meta name ="author" content ="Nahiara Sánchez García" /> 
-    <meta name ="description" content ="Documento con juegos interactivos." /> 
-    <meta name ="keywords" content ="mmotogp, moto, juego, juegos, interactivo" /> 
+    <meta name ="description" content ="Documento con cronómetro." /> 
+    <meta name ="keywords" content ="mmotogp, moto, juego, juegos, interactivo, cronometro" /> 
     <meta name ="viewport" content ="width=device-width, initial-scale=1.0" /> 
 
      <!-- Enlaces -->
      <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
      <link rel="stylesheet" type="text/css" href="estilo/layout.css" />
+     <script src="js/Cronometro.js"></script>
 
      <!--FavIcon-->
     <link rel="icon" href="multimedia/favicon.ico" />
@@ -38,12 +39,19 @@
 
     </header>
 
-    <p>Estas en: <a href="piloto.html" title="Página Inicio">Inicio</a> | <strong>Juegos</strong></p>
+    <p>Estas en: <a href="piloto.html" title="Página Inicio">Inicio</a> | <a href="juegos.html" title="Página Juegos">Juegos</a> | <strong>Juego de cronómetro</strong></p>
 
-    <h2>Juegos de MotoGP-Desktop</h2>
-    <ul>
-        <li><a href="memoria.html" title="Juego de memoria">Juego de memoria con cartas.</a></li>
-        <li><a href="cronometro.html" title="Juego de cronometro">Cronómetro.</a></li>
-    </ul>
+    <main>
+        <h2>Cronómetro</h2>
+        <p>00:00.0</p>
+        <button onclick="cronometro.arrancar()">Arrancar</button>
+        <button onclick="cronometro.parar()">Parar</button>
+        <button onclick="cronometro.reiniciar()">Reiniciar</button>
+    </main>
+    
+    <script>
+        const cronometro = new Cronometro();
+    </script>
+    
 </body>
 </html>

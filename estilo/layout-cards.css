@@ -1,7 +1,7 @@
 main {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 columnas iguales */
-    grid-template-rows: auto repeat(3, 1fr); /* primera fila automática para el título, luego 3 filas iguales para cartas */
+    grid-template-rows: auto auto repeat(3, 1fr); /* primera fila automática para el título, luego 3 filas iguales para cartas */
     grid-gap: 2vw;
     justify-items: center;
     align-items: center;
@@ -13,6 +13,10 @@ main h2 {
     text-align: center;
 }
 
+main p {
+    grid-column: 1 / -1; /* ocupa desde la primera hasta la última columna */
+    text-align: center;
+}
 
 main article {
     display: flex;

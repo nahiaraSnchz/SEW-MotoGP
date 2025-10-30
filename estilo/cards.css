@@ -14,9 +14,13 @@ main article {
     box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,.3);
 }
 
-/* Regla con la transformación que permite girar la carta cuando se le pone el data-state al valor flip */
+/* Regla con la transformación que permite girar la carta cuando se le pone el data-state al valor volteada */
 /* especificidad: 012 */
-main article[data-state=flip] {
+main article[data-estado=volteada] {
+    transform: rotateY(180deg);
+}
+/* especificidad: 012 */
+main article[data-estado=revelada] {
     transform: rotateY(180deg);
 }
 
