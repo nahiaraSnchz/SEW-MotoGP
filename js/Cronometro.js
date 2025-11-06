@@ -1,36 +1,40 @@
 class Cronometro {
 
+    #tiempo;
+    #inicio = null;
+    #corriendo = null;
+
     constructor() {
-        this.tiempo = 0;
+        this.#tiempo = 0;
     }
 
     arrancar() {
         try {
-            this.inicio = Temporal.Now.instant();
+            this.#inicio = Temporal.Now.instant();
         }
         catch (error) {
-            this.inicio = new Date();
+            this.#inicio = new Date();
         }
-        this.corriendo = setInterval(this.actualizar.bind(this), 100);
+        this.#corriendo = setInterval(this.actualizar.bind(this), 100);
         this.mostrar();
     }
 
     actualizar() {
         try {
             let ahora = Temporal.Now.instant();
-            let diferencia = ahora.epochMilliseconds - this.inicio.epochMilliseconds;
-            this.tiempo = diferencia;
+            let diferencia = ahora.epochMilliseconds - this.#inicio.epochMilliseconds;
+            this.#tiempo = diferencia;
         }
         catch (error) {
             let ahora = new Date();
-            let diferencia = ahora - this.inicio;
-            this.tiempo = diferencia;
+            let diferencia = ahora - this.#inicio;
+            this.#tiempo = diferencia;
         }
         this.mostrar();
     }
 
     mostrar() {
-        let totalMillis = this.tiempo;
+        let totalMillis = this.#tiempo;
         let minutos = parseInt(totalMillis / 60000);
         let segundos = parseInt((totalMillis % 60000) / 1000);
         let decimas = parseInt((totalMillis % 1000) / 100);
@@ -46,12 +50,12 @@ class Cronometro {
     }
 
     parar() {
-        clearInterval(this.corriendo)
+        clearInterval(this.#corriendo)
     }
 
     reiniciar() {
-        clearInterval(this.corriendo);
-        this.tiempo = 0;
+        clearInterval(this.#corriendo);
+        this.#tiempo = 0;
         this.mostrar();
     }
 

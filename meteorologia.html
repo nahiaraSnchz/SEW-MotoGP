@@ -47,9 +47,8 @@
     <script>
         var ciudad = new Ciudad("Ciudad de Assen", "Países Bajos", "assenés");
         ciudad.rellenarDatosSecundarios(66215, 52.9927553, 6.5642269, 14.2866527);
-        document.write("El circuito está cerca de la " + ciudad.getNombreCiudad() + ", en " + ciudad.getPais());
-        document.write(ciudad.getInformacion());
-        document.write("<h4>Coordenadas de la ciudad:</h4>");
+        ciudad.mostrarInformacionBasica();
+        ciudad.getInformacion();
         ciudad.mostrarCoordenadas();
     </script>
 
