@@ -13,10 +13,17 @@
      <!-- Enlaces -->
      <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
      <link rel="stylesheet" type="text/css" href="estilo/layout.css" />
-     <script src="js/Ciudad.js"></script>
 
      <!--FavIcon-->
     <link rel="icon" href="multimedia/favicon.ico" />
+
+    <!-- jQuery 3.7.1 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+
+    <script src="js/Ciudad.js"></script>
+    
      
 </head>
 
@@ -43,14 +50,22 @@
 
     <h2>Meteorología del circuito</h2>
     
-    <h3>Información de la ciudad del circuito</h3>
-    <script>
-        var ciudad = new Ciudad("Ciudad de Assen", "Países Bajos", "assenés");
-        ciudad.rellenarDatosSecundarios(66215, 52.9927553, 6.5642269, 14.2866527);
-        ciudad.mostrarInformacionBasica();
-        ciudad.getInformacion();
-        ciudad.mostrarCoordenadas();
-    </script>
+    <section>
+        <h3>Información de la ciudad del circuito</h3>
+        <script>
+            var ciudad = new Ciudad("Ciudad de Assen", "Países Bajos", "assenés");
+            ciudad.rellenarDatosSecundarios(66215, 52.9927553, 6.5642269, 14.2866527);
+            ciudad.mostrarInformacionBasica();
+            ciudad.getInformacion();
+            ciudad.mostrarCoordenadas();
+            let fechaCarrera = "2025-06-25"; // ejemplo
+            ciudad.getMeteorologia(fechaCarrera);
+        </script>
+    </section>
+    
+    <section>
+    </section>
+    
 
 </body>
 </html>
