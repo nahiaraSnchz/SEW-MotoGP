@@ -38,5 +38,21 @@ nav {
         display: none;
     }
 
+    article h2 + img {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    article {
+      padding: 0.5em;
+      text-align: center;
+    }
+
+    article h2 {
+      font-size: 1.2em;
+    }
+
     
   }

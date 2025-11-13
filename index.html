@@ -14,13 +14,14 @@
      <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
      <link rel="stylesheet" type="text/css" href="estilo/layout.css" />
 
-     <script src="js/Carrusel.js"></script>
+
 
      <!--FavIcon-->
     <link rel="icon" href="multimedia/favicon.ico" />
 
     <!-- jQuery 3.7.1 -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/Carrusel.js"></script>
 
 </head>
 
@@ -46,6 +47,15 @@
     <p>Estas en: <strong>Inicio</strong></a></p>
 
     <h2>Página principal</h2>
-    <p>En desarrollo</p>
+    <script>
+        $(function() {
+            const carrusel = new Carrusel("motogp");
+            carrusel.getFotografias()
+                .then(fotos => {
+                    carrusel.procesarJSONFotografias(fotos);
+                    carrusel.mostrarFotografias();
+                });
+        });
+    </script>
 </body>
 </html>

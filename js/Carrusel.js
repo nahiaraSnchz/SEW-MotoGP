@@ -35,14 +35,14 @@ class Carrusel {
         for (let i = 0; i < numFotos; i++) {
             const foto = jsonFotos[i];
             this.#fotos.push({
-                titulo: foto.titulo,
+                titulo: foto.title,
                 url: foto.media.m.replace('_m.', '_b.')
             });
         }
         return this.#fotos;
     }
 
-    mostrarFotografias(fotosProcesadas) {
+    mostrarFotografias() {
         if(!this.#fotos || this.#fotos.length === 0) {
             console.warn("No hay fotografías para mostrar.");
             return;
@@ -50,14 +50,14 @@ class Carrusel {
 
         const $article = $("<article></article>");
 
-        const $h2 = $(`<h2>Imágenes del circuito de ${this.#busqueda}</h2>`);
-        $article.append($h2);
+        const $h3 = $(`<h3>Imágenes del circuito de ${this.#busqueda}</h3>`);
+        $article.append($h3);
 
         const primeraFoto = this.#fotos[this.#actual];
         this.#img = $("<img>").attr("src", primeraFoto.url).attr("alt", primeraFoto.titulo);
-        $article.append($img);
+        $article.append(this.#img);
 
-        $body.append($article);
+        $("body").append($article);
 
         // Cambio automático cada 3 segundos
         setInterval(this.cambiarFotografia.bind(this), 3000);
@@ -68,6 +68,7 @@ class Carrusel {
 
         this.#actual = (this.#actual + 1) % this.#maximo;
         const nuevaFoto = this.#fotos[this.#actual];
-        this.$img.attr("src", nuevaFoto.url).attr("alt", nuevaFoto.titulo);
+        this.#img.attr("src", nuevaFoto.url).attr("alt", nuevaFoto.titulo);
     }
 }
+
