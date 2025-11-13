@@ -16,11 +16,18 @@ nav {
     padding-bottom: 1em;
 }
 
+article {
+  width: 100%;         /* ancho relativo al body */
+  text-align: center; /* centra contenido dentro del article */
+}
 
-@media (min-width: 320px) and (max-width: 799px) {
+
+ @media (min-width: 320px) and (max-width: 799px) {
     header {
-      flex-direction: column; /*Redefinición de flex-direction*/
-      align-items: flex-start; /*Redefinición de align-items*/
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      overflow-x: hidden; /* Evita que flex se desborde */
     }
   
     header h1 {
@@ -28,31 +35,46 @@ nav {
     }
   
     nav {
-      flex-direction: column; /*Redefinición de flex direction*/
-      gap: 0.5em; /*Redefinición de gap*/
-      padding-bottom: 0; /*Redefinición de padding-bottom*/
+      flex-direction: column;
+      gap: 0.5em;
+      padding-bottom: 0;
+      width: 100%;
+      overflow-x: hidden;
     }
   
-    
-    body > p:first-of-type{
+    body {
+      overflow-x: hidden; 
+      margin: 0;
+      padding: 0;
+    }
+
+    body > p:first-of-type {
         display: none;
     }
 
-    article h2 + img {
-        width: 100%;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-    }
-
+    /* Carrusel móvil */
     article {
+      box-sizing: border-box;
+      max-width: 100%;
       padding: 0.5em;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    article h2 + img {
+      width: 100%;        
+      height: auto;       
+      max-height: 80vh;    
+      display: block;
+      margin: 0 auto;
+      object-fit: contain; 
     }
 
     article h2 {
-      font-size: 1.2em;
+        font-size: 1.2em;
     }
-
-    
-  }
+}
+  

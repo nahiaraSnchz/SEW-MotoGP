@@ -36,7 +36,7 @@ class Carrusel {
             const foto = jsonFotos[i];
             this.#fotos.push({
                 titulo: foto.title,
-                url: foto.media.m.replace('_m.', '_b.')
+                url: foto.media.m.replace('_m.', '_z.')
             });
         }
         return this.#fotos;
