@@ -24,6 +24,7 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
         crossorigin="anonymous"></script>
     <script src="js/Carrusel.js"></script>
+    <script src="js/Noticias.js"></script>
 
 </head>
 
@@ -49,6 +50,10 @@
     <p>Estas en: <strong>Inicio</strong></a></p>
 
     <h2>Página principal</h2>
+
+    <section>
+        <!-- Carrusel de imágenes -->
+    </section>
     <script>
         $(function() {
             const carrusel = new Carrusel("motogp");
@@ -59,5 +64,18 @@
                 });
         });
     </script>
+
+    <section>
+        <!-- Noticias de MotoGP -->
+    </section>
+
+    <script>
+        $(function() {
+            const noticias = new Noticias('MotoGP');
+            noticias.buscar(); 
+        });
+    </script>
+
+
 </body>
 </html>

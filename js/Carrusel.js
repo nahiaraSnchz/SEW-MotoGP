@@ -57,7 +57,7 @@ class Carrusel {
         this.#img = $("<img>").attr("src", primeraFoto.url).attr("alt", primeraFoto.titulo);
         $article.append(this.#img);
 
-        $("body").append($article);
+        $("section").first().append($article);
 
         // Cambio automático cada 3 segundos
         setInterval(this.cambiarFotografia.bind(this), 3000);
