@@ -16,6 +16,14 @@
 
      <!--FavIcon-->
     <link rel="icon" href="multimedia/favicon.ico" />
+
+    <!-- jQuery 3.7.1 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+
+    <script src="js/Circuito.js"></script>
+
      
 </head>
 
@@ -41,6 +49,13 @@
     <p>Estas en: <a href="piloto.html" title="Página Inicio">Inicio</a> | <strong>Circuito</strong></p>
 
     <h2>Circuito de MotoGP-Desktop</h2>
-    <p>En desarrollo</p>
+    <section>
+        <!-- Se mostrará la info del circuito -->
+    </section>
+
+    <script>
+        var circuitoHTML = new Circuito();
+        circuitoHTML.leerArchivoHTML();
+    </script>
 </body>
 </html>

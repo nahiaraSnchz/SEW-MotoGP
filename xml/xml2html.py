@@ -1,11 +1,12 @@
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 # -------------------------------------------------------
 # Clase Html para generar el archivo InfoCircuito.html
 # -------------------------------------------------------
 class Html:
     def __init__(self, title, css_path, output_file):
-        self.output_file = output_file
+        self.output_file = Path(output_file)
         self.content = []
         self.header(title, css_path)
 
@@ -17,6 +18,7 @@ class Html:
         self.content.append('  <meta charset="UTF-8">')
         self.content.append('  <meta name="viewport" content="width=device-width, initial-scale=1.0">')
         self.content.append(f'  <title>{title}</title>')
+        # Aquí solo se usa la ruta relativa que pasamos
         self.content.append(f'  <link rel="stylesheet" href="{css_path}">')
         self.content.append('</head>')
         self.content.append('<body>')
@@ -26,7 +28,7 @@ class Html:
     def add_section(self, title):
         """Añadir una sección con encabezado"""
         self.content.append(f'<section>')
-        self.content.append(f'  <h2>{title}</h2>')
+        self.content.append(f'  <h3>{title}</h3>')
 
     def add_paragraph(self, text):
         """Añadir párrafo dentro de una sección"""
@@ -46,7 +48,6 @@ class Html:
     def footer(self):
         """Pie de página y cierre"""
         self.content.append('</main>')
-        self.content.append('<footer><p>Generado automáticamente por xml2html.py</p></footer>')
         self.content.append('</body>')
         self.content.append('</html>')
 
@@ -55,7 +56,6 @@ class Html:
         self.footer()
         with open(self.output_file, 'w', encoding='utf-8') as f:
             f.write("\n".join(self.content))
-
 
 # -------------------------------------------------------
 # Función que extrae la información del XML usando XPath
@@ -69,40 +69,49 @@ def parse_xml(xml_path):
 
     # Información general del circuito
     data['nombre'] = root.get('nombre', 'Sin nombre')
-    data['descripcion'] = "El circuito se encuentra en " + root.get('ciudad', 'Sin Ciudad') + ", " + root.get('pais', 'Sin país') + "."
-    data['longitud'] = "La longitud del circuito es de " + root.findtext('.//u:longitudCircuito', default='', namespaces=ns) + "m y de un total de " + root.findtext('.//u.vueltas', default='', namespaces=ns) + "."
-
-    # Localización
-    pais = root.get('pais', 'Sin país')
     ciudad = root.get('ciudad', 'Sin ciudad')
+    pais = root.get('pais', 'Sin país')
+    data['descripcion'] = f"El circuito se encuentra en {ciudad}, {pais}."
     data['localizacion'] = f"{ciudad}, {pais}".strip(', ')
+    longitud = root.findtext('u:longitudCircuito', default='', namespaces=ns)
+    vueltas = root.findtext('u:vueltas', default='', namespaces=ns)
+    data['longitud_vueltas'] = f"La longitud del circuito es de {longitud} km y se correrá a {vueltas} vueltas."
 
-    # Imagen (si existe)
-    img = root.findtext('.//u:imagen', default='', namespaces=ns)
-    if img:
-        data['imagen'] = img
+    # Foto
+    foto = root.findtext('u:foto', default='', namespaces=ns)
+    if foto:
+        data['foto'] = foto
 
-    
+    # Video (opcional)
+    video = root.findtext('u:video', default='', namespaces=ns)
+    if video:
+        data['video'] = video
+
+    # Vencedor y tres clasificados
+    data['vencedor'] = root.findtext('u:vencedor', default='', namespaces=ns)
+    data['clasificados'] = [c.text for c in root.findall('u:tresClasificados/u:clasificado', namespaces=ns)]
+
+    # Referencias
+    data['referencias'] = [r.text for r in root.findall('u:referencias/u:referencia', namespaces=ns)]
 
     return data
-
 
 # -------------------------------------------------------
 # Función principal
 # -------------------------------------------------------
 def main():
-    xml_file = 'circuitoEsquema.xml'
-    html_file = 'InfoCircuito.html'
-    css_path = 'css/estilo.css'
+    xml_file = 'circuitoEsquema.xml'          # Dentro de la carpeta xml/
+    html_file = 'InfoCircuito.html'           # Se generará aquí mismo
+    css_file = '../estilo/estilo.css'            # Ruta relativa desde xml/ a css/
 
     data = parse_xml(xml_file)
 
-    html = Html(data.get('nombre', 'Circuito'), css_path, html_file)
+    html = Html(data.get('nombre', 'Circuito'), css_file, html_file)
 
     # Sección de información general
     html.add_section("Información general")
     html.add_paragraph(data.get('descripcion', ''))
-    html.add_paragraph(data.get('longitud'))
+    html.add_paragraph(data.get('longitud_vueltas', ''))
     html.end_section()
 
     # Sección de localización
@@ -111,16 +120,34 @@ def main():
     html.end_section()
 
     # Imagen si existe
-    if 'imagen' in data:
+    if 'foto' in data:
         html.add_section("Imagen del circuito")
-        html.content.append(f'<img src="{data["imagen"]}" alt="Imagen del circuito" style="max-width:100%;height:auto;">')
+        html.content.append(f'<img src="../multimedia/{data["foto"]}" alt="Imagen del circuito" style="max-width:100%;height:auto;">')
         html.end_section()
 
+    # Video si existe
+    if 'video' in data:
+        html.add_section("Video del circuito")
+        html.content.append(f'<video controls style="max-width:100%;height:auto;"><source src="../multimedia/{data["video"]}" type="video/mp4">Tu navegador no soporta video.</video>')
+        html.end_section()
 
+    # Sección de resultados
+    html.add_section("Resultados")
+    html.add_paragraph(f"Vencedor: {data.get('vencedor', '')}")
+    html.content.append('<ol>')
+    for c in data.get('clasificados', []):
+        html.content.append(f'<li>{c}</li>')
+    html.content.append('</ol>')
+    html.end_section()
 
+    # Sección de referencias
+    html.add_section("Referencias")
+    html.add_list([f'<a href="{r}" target="_blank">{r}</a>' for r in data.get('referencias', [])])
+    html.end_section()
+
+    # Guardar HTML
     html.save()
     print(f"Archivo {html_file} generado correctamente.")
-
 
 if __name__ == "__main__":
     main()
