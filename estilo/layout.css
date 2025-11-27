@@ -21,6 +21,15 @@ article {
   text-align: center; /* centra contenido dentro del article */
 }
 
+/* Contenedor principal del mapa dinámico */
+main > section > div {
+  width: 100%;        /* Ocupa todo el ancho disponible */
+  height: 70vh;       /* Ocupa el 70% de la altura de la ventana */
+  min-height: 300px;  /* Altura mínima para que no colapse en pantallas pequeñas */
+  margin: 0;
+  padding: 0;
+}
+
 
  @media (min-width: 320px) and (max-width: 799px) {
     header {

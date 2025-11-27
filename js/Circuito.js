@@ -102,9 +102,6 @@ class CargadorSVG {
         this.#archivo = null;
         this.comprobarApiFile();
 
-        // Crear un contenedor para mostrar el SVG
-        this.#contenedor = document.createElement("section");
-        document.querySelector("main").appendChild(this.#contenedor);
     }
 
     comprobarApiFile() {
@@ -125,6 +122,10 @@ class CargadorSVG {
     */
     leerArchivoSVG() {
         if (!this.#soportaFile) return;
+
+        // Crear un contenedor para mostrar el SVG
+        this.#contenedor = document.createElement("section");
+        document.querySelector("main").appendChild(this.#contenedor);
 
         // Crear un section para el input para que quede separado
         const $inputSection = $('<section></section>');
@@ -164,7 +165,7 @@ class CargadorSVG {
         });
 
         $inputSection.append($input);
-        $("body").append($inputSection); // Se añade el section al body para que quede separado
+        $("main").append($inputSection); // Se añade el section al body para que quede separado
     }
     
 
@@ -181,3 +182,124 @@ class CargadorSVG {
         this.#contenedor.appendChild(svg);
     }
 }
+
+class CargadorKML {
+    #archivo;
+    #contenido;
+    #soportaFile;
+    #contenedor;
+    #mapa;
+    #puntos;
+
+    constructor() {
+        this.#archivo = null;
+        this.#contenido = null;
+        this.#puntos = [];
+        this.comprobarApiFile();
+    }
+
+    comprobarApiFile() {
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            this.#soportaFile = true;
+        } else {
+            this.#soportaFile = false;
+            $("body").prepend(
+                $("<p>").text("ATENCIÓN: Su navegador no soporta la API File.")
+            );
+        }
+        return this.#soportaFile;
+    }
+
+    leerArchivoKML() {
+        if (!this.#soportaFile) return;
+
+        const $inputSection = $('<section></section>');
+        const $titulo = $('<h3>Introduzca archivo KML:</h3>');
+        $inputSection.append($titulo);
+
+        const $input = $('<input type="file" accept=".kml">');
+        $inputSection.append($input);
+        
+        // Crear contenedor para el mapa
+        this.#contenedor = document.createElement("div");
+        $inputSection.append(this.#contenedor);
+
+        $("main").append($inputSection);
+
+        $input.on("change", async (event) => {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+
+            this.#archivo = archivo;
+
+            if (!archivo.name.toLowerCase().endsWith(".kml")) {
+                alert("Debe seleccionar un archivo .kml");
+                return;
+            }
+
+            const lector = new FileReader();
+            lector.onload = async (e) => {
+                this.#contenido = e.target.result;
+                $titulo.text(`Archivo cargado: ${archivo.name}`);
+                $input.remove();
+                await this.procesarKML();
+                await this.inicializarMapa();
+            };
+            lector.readAsText(archivo);
+        });
+    }
+
+    async procesarKML() {
+        if (!this.#contenido) return;
+
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(this.#contenido, "text/xml");
+
+        const lineStringNode = xmlDoc.querySelector("LineString > coordinates");
+        if (!lineStringNode) return;
+
+        this.#puntos = lineStringNode.textContent.trim().split(/\s+/).map(coord => {
+            const [lng, lat] = coord.split(",");
+            return { lat: parseFloat(lat), lng: parseFloat(lng) };
+        });
+    }
+
+    async inicializarMapa() {
+        if (!this.#puntos.length) return;
+
+        // Cargar librería de mapas y marcadores
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+        // Crear mapa
+        this.#mapa = new Map(this.#contenedor, {
+            zoom: 15,
+            center: this.#puntos[0]
+        });
+
+        // Dibujar polilínea
+        const trazo = new google.maps.Polyline({
+            path: this.#puntos,
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+        trazo.setMap(this.#mapa);
+
+        // Crear marcadores avanzados
+        this.#puntos.forEach(p => {
+            new google.maps.Marker({
+                map: this.#mapa,
+                position: p,
+                title: "Punto de ruta"
+            });
+        });
+    }
+}
+
+// Inicialización
+$(document).ready(() => {
+    const cargador = new CargadorKML();
+    cargador.leerArchivoKML();
+});
