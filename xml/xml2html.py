@@ -82,7 +82,7 @@ def parse_xml(xml_path):
     if foto:
         data['foto'] = foto
 
-    # Video (opcional)
+    # Video
     video = root.findtext('u:video', default='', namespaces=ns)
     if video:
         data['video'] = video
@@ -100,9 +100,9 @@ def parse_xml(xml_path):
 # Función principal
 # -------------------------------------------------------
 def main():
-    xml_file = 'circuitoEsquema.xml'          # Dentro de la carpeta xml/
-    html_file = 'InfoCircuito.html'           # Se generará aquí mismo
-    css_file = '../estilo/estilo.css'            # Ruta relativa desde xml/ a css/
+    xml_file = 'circuitoEsquema.xml'
+    html_file = 'InfoCircuito.html'
+    css_file = '../estilo/estilo.css'
 
     data = parse_xml(xml_file)
 

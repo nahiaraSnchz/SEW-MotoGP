@@ -48,14 +48,21 @@
 
     <p>Estas en: <a href="piloto.html" title="Página Inicio">Inicio</a> | <strong>Circuito</strong></p>
 
-    <h2>Circuito de MotoGP-Desktop</h2>
-    <section>
-        <!-- Se mostrará la info del circuito -->
-    </section>
+    <main>
+        <h2>Circuito de MotoGP-Desktop</h2>
+        
+        <section>
+            <!-- Se mostrará la info del circuito -->
+        </section>
 
-    <script>
-        var circuitoHTML = new Circuito();
-        circuitoHTML.leerArchivoHTML();
-    </script>
+        <script>
+            var circuitoHTML = new Circuito();
+            circuitoHTML.leerArchivoHTML();
+
+            var cargadorSVG = new CargadorSVG();
+            cargadorSVG.leerArchivoSVG();
+        </script>
+    </main>
+    
 </body>
 </html>
