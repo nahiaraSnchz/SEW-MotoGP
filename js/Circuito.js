@@ -264,61 +264,26 @@ class CargadorKML {
         });
     }
 
-    /* async inicializarMapa() {
-        if (!this.#puntos.length) return;
-
-        // Crear mapa
-        this.#mapa = new Map(this.#contenedor, {
-            zoom: 15,
-            center: this.#puntos[0]
-        });
-
-        // Dibujar polilínea
-        const trazo = new google.maps.Polyline({
-            path: this.#puntos,
-            geodesic: true,
-            strokeColor: "#FF0000",
-            strokeOpacity: 1.0,
-            strokeWeight: 2
-        });
-        trazo.setMap(this.#mapa);
-
-        // Crear marcadores avanzados
-        this.#puntos.forEach(p => {
-            new google.maps.Marker({
-                map: this.#mapa,
-                position: p,
-                title: "Punto de ruta"
-            });
-        });
-    } */
     inicializarMapa() {
         if (!this.#puntos.length) return;
         
-        const MI_MAP_ID = "TU_MAP_ID_REAL"; 
-        
-        // 1. Crear el objeto LatLngBounds
-        // Este objeto se encarga de calcular el área mínima que contiene todos los puntos.
+        const MI_MAP_ID = "ffc769ded9d9bada65851b32"; 
+    
         const bounds = new google.maps.LatLngBounds(); 
 
         // 2. Iterar sobre los puntos y extender los límites
         this.#puntos.forEach(p => {
-            // Añade cada punto geográfico (lat/lng) al límite
             bounds.extend(p); 
         });
 
-        // 3. Crear el mapa (la inicialización sigue igual, sin 'center' ni 'zoom' iniciales)
+        // Crear el mapa
         this.#mapa = new google.maps.Map(this.#contenedor, {
             mapId: MI_MAP_ID
-            // NO ES NECESARIO establecer 'center' o 'zoom' aquí. 
         });
 
-        // 4. Pedirle al mapa que se ajuste a los límites calculados
-        // El método fitBounds() centra el mapa y ajusta el zoom automáticamente.
-        this.#mapa.fitBounds(bounds); // <--- CENTRADO AUTOMÁTICO
+        //  mapa se ajusta a los límites calculados
+        this.#mapa.fitBounds(bounds);
 
-        // ... (el resto del código para dibujar la polilínea y los marcadores sigue aquí)
-        
         // Dibujar polilínea
         const trazo = new google.maps.Polyline({
             path: this.#puntos,
@@ -330,7 +295,6 @@ class CargadorKML {
         trazo.setMap(this.#mapa);
 
         // Crear marcadores
-         // Crear marcadores avanzados
         this.#puntos.forEach(p => {
             // Usar AdvancedMarkerElement en lugar del antiguo Marker
             new google.maps.marker.AdvancedMarkerElement({ // <--- CORRECCIÓN CLAVE
