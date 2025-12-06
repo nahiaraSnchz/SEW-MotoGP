@@ -103,7 +103,7 @@ class Ciudad {
         });
     }
 
-    procesarJSONCarrera(datosJSON) {
+   /*procesarJSONCarrera(datosJSON) {
         let info = {
             sunrise: datosJSON.daily.sunrise[0],
             sunset: datosJSON.daily.sunset[0],
@@ -123,7 +123,44 @@ class Ciudad {
         }
 
         return info;
-    }
+    } */
+
+     procesarJSONCarrera(datosJSON) {
+        // La hora de la carrera es fija: 14:00
+        const HORA_CARRERA = "T14:00"; 
+        
+        // 1. Encontrar el índice que corresponde a las 14:00
+        // Buscamos una hora que contenga ":00" y que inicie con "T14"
+        const indiceCarrera = datosJSON.hourly.time.findIndex(horaCompleta => {
+            // Ejemplo: "2025-06-29T14:00"
+            return horaCompleta.includes(HORA_CARRERA); 
+        });
+
+        // Verificación de seguridad
+        if (indiceCarrera === -1) {
+            console.warn(`No se encontraron datos para la hora ${HORA_CARRERA}:00.`);
+            return null; // Devolvemos null o un objeto vacío si no se encuentra
+        }
+        
+        // 2. Extraer solo los datos de esa hora específica (usando el índice)
+        let info = {
+            sunrise: datosJSON.daily.sunrise[0],
+            sunset: datosJSON.daily.sunset[0],
+            // La propiedad 'hourly' ahora será un objeto único, no un array de 24.
+            hourly: {
+                hora: datosJSON.hourly.time[indiceCarrera],
+                temperatura: datosJSON.hourly.temperature_2m[indiceCarrera],
+                sensacionTermica: datosJSON.hourly.apparent_temperature[indiceCarrera],
+                lluvia: datosJSON.hourly.rain[indiceCarrera],
+                humedad: datosJSON.hourly.relativehumidity_2m[indiceCarrera],
+                vientoVelocidad: datosJSON.hourly.windspeed_10m[indiceCarrera],
+                vientoDireccion: datosJSON.hourly.winddirection_10m[indiceCarrera]
+            }
+        };
+
+        // 3. Devolvemos el objeto 'info' con el nuevo formato
+        return info;
+    } 
 
     mostrarEnHTML(info) {
         // Seleccionamos el segundo <section> sin usar id ni class
@@ -143,12 +180,17 @@ class Ciudad {
 
         contenedor.append(listaMeteorologia);
 
-        contenedor.append($("<h3>").text("Datos por horas"));
+        contenedor.append($("<h3>").text("Datos a la hora de la carrera (14:00)"));
         let listaHoras = $("<ul>");
         // Datos por hora
-        info.hourly.forEach(hora => {
+        if (info.hourly) { 
+            const hora = info.hourly;
+            
+            // Extraer solo la hora (ej: "14:00")
+            const horaFormateada = hora.hora ? hora.hora.substring(11, 16) : '14:00'; 
+            
             let li = $("<li>").text(
-                `${hora.hora} → Temp: ${hora.temperatura}°C, `
+                `${horaFormateada} → Temp: ${hora.temperatura}°C, `
                 + `Sensación: ${hora.sensacionTermica}°C, `
                 + `Lluvia: ${hora.lluvia}mm, `
                 + `Humedad: ${hora.humedad}%, `
@@ -156,7 +198,9 @@ class Ciudad {
                 + `Dir: ${hora.vientoDireccion}°`
             );
             listaHoras.append(li);
-        });
+        } else {
+            listaHoras.append($("<li>").text("No se encontraron datos específicos para la hora de la carrera (14:00)."));
+        }
         contenedor.append(listaHoras);
     }
 
