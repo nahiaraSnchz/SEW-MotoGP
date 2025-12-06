@@ -31,7 +31,7 @@
             <a href="piloto.html" title="Página Piloto de MotoGP">Piloto</a>
             <a href="circuito.html" title="Página Circuito">Circuito</a>
             <a href="meteorologia.html" title="Página Meteorología  ">Meteorología</a>
-            <a class="active" href="clasificaciones.html" title="Página Clasificaciones">Clasificaciones</a>
+            <a class="active" href="clasificaciones.php" title="Página Clasificaciones">Clasificaciones</a>
             <a href="juegos.html" title="Página Juegos">Juegos</a>
             <a href="ayuda.html" title="Página Ayuda">Ayuda</a>
         </nav>

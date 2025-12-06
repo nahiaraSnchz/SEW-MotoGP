@@ -25,9 +25,17 @@ class Noticias {
         // URL
         const fullUrl = `${this.#url}?api_token=${this.#apiKey}&search=${encodeURIComponent(this.#busqueda)}&language=es`; 
         return fetch(fullUrl)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error en la respuesta de la API");
+                }   
+                return response.json();
+            })
             .then(data => {
                 const noticias = this.procesarInformacion(data);
+                if (noticias.length === 0) {
+                     console.warn("La búsqueda no devolvió resultados. Intenta con un término más general.");
+                }
                 this.mostrarNoticias(noticias);
             })
             .catch(error => console.error("Error al obtener noticias:", error));
