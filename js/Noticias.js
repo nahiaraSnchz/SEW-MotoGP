@@ -6,7 +6,7 @@ class Noticias {
 
     constructor(busqueda) {
         this.#busqueda = busqueda;
-        this.#url = "https://api.thenewsapi.com/v1/news/all?";
+        this.#url = "https://api.thenewsapi.com/v1/news/all";
         this.#apiKey = "IO83AMZM1KVoyy9qyyOfB81JBmCayHMr91sCIuSk";
     }
 
@@ -23,7 +23,7 @@ class Noticias {
     // Método para realizar la búsqueda de noticias con fetch()
     buscar() {
         // URL
-        const fullUrl = `${this.#url}q=${encodeURIComponent(this.#busqueda)}&language=es&api_token=${this.#apiKey}`;
+        const fullUrl = `${this.#url}?api_token=${this.#apiKey}&search=${encodeURIComponent(this.#busqueda)}&language=es`; 
         return fetch(fullUrl)
             .then(response => response.json())
             .then(data => {
