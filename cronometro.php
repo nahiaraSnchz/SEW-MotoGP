@@ -20,11 +20,6 @@
      <!--FavIcon-->
     <link rel="icon" href="multimedia/favicon.ico" />
 
-    <!-- jQuery 3.7.1 -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-        crossorigin="anonymous"></script>
-
 </head>
 
 <body>
@@ -54,6 +49,7 @@
 
             public function __construct() {
                 $this->tiempo = 0;
+                $this->inicio = null;
             }
 
             public function arrancar() {
@@ -61,42 +57,41 @@
             }
 
             public function parar() {
-                $momentoFinal = microtime(true);
-                $tiempoTranscurrido = $momentoFinal - $this->inicio;
-                $this->tiempo += $tiempoTranscurrido;
-                $this->inicio = null;
+                if ($this->inicio !== null) {
+                    $momentoFinal = microtime(true);
+                    $tiempoTranscurrido = $momentoFinal - $this->inicio;
+                    $this->tiempo += $tiempoTranscurrido;
+                    $this->inicio = null;
+                }
             }
 
             public function mostrar() {
-                $totalSegundos = $this->tiempo;
+                $tiempoTotal = $this->tiempo;
 
-                $minutos = floor($totalSegundos / 60);
-                $segundosDecimal = $totalSegundos - ($minutos * 60);
-
-                $formatoMinutos = str_pad($minutos, 2, '0', STR_PAD_LEFT);
-                $formatoSegundos = number_format($segundosDecimal, 3, '.', '');
-
-                if ($segundosDecimal < 10) {
-                    $formatoSegundos = '0' . $formatoSegundos;
+                // si el cronometro está activo
+                if ($this->inicio !== null) {
+                    $tiempoTotal = microtime(true) - $this->inicio;
                 }
 
-                return $formatoMinutos . ':' . $formatoSegundos;
+                $minutos = floor($tiempoTotal / 60);
+                $segundosDecimal = $tiempoTotal - ($minutos * 60);
+
+                $segundos = floor($segundosDecimal);
+                $decimas = floor(($segundosDecimal - $segundos) * 10);
+
+                $formatoMinutos = str_pad($minutos, 2, '0', STR_PAD_LEFT);
+                $formatoSegundos = str_pad($segundos, 2, '0', STR_PAD_LEFT);
+
+                return $formatoMinutos . ':' . $formatoSegundos . '.' . $decimas;
             }
 
             public function getInicio() { return $this->inicio; }
             public function getTiempo() { return $this->tiempo; }
-            public function setInicio($inicio) { $this->inicio = $inicio; }
-            public function setTiempo($tiempo) { $this->tiempo = $tiempo; }
         }
 
         // Lógica para manejar el cronómetro
-        if (isset($_SESSION['cronometro_obj'])) {
-            $crono = $_SESSION['cronometro_obj'];
-            // Reconstruir el objeto Cronometro
-            $temp = new Cronometro();
-            $temp->setTiempo($crono['tiempo']);
-            $temp->setInicio($crono['inicio']);
-            $miCronometro = $temp;
+        if (isset($_SESSION['miCronometro'])) {
+            $miCronometro = $_SESSION['miCronometro'];
         }
         else {
             $miCronometro = new Cronometro();
@@ -109,17 +104,25 @@
             if (isset($_POST['arrancar'])) {
                 $miCronometro->arrancar();
                 $mensaje = "Cronómetro arrancado.";
-                
             } 
             if (isset($_POST['parar'])) {
-                $miCronometro->parar();
-                $mensaje = "Cronómetro parado.";
+                // verificar si el cronómetro está en marcha
+                if ($miCronometro->getInicio() !== null) {
+                    $miCronometro->parar();
+                    $mensaje = "Cronómetro parado.";
+                }
+                else {
+                    $mensaje = "El cronómetro no está en marcha.";
+                }
+            }
+            if (isset($_POST['mostrar'])) {
+                $tiempo_actual = $miCronometro->mostrar();
+                $estado = ($miCronometro->getInicio() !== null) ? "en marcha" : "detenido";
+                $mensaje = "Tiempo actual: " . $tiempo_actual . " (Cronómetro " . $estado . ").";
             }
 
-            $_SESSION['cronometro_obj'] = [
-                'tiempo' => $miCronometro->getTiempo(),
-                'inicio' => $miCronometro->getInicio()
-            ];
+            // guardar objeto completo en la sesión
+            $_SESSION['miCronometro'] = $miCronometro;
 
             if ($mensaje) {
                 echo "<p>" . $mensaje . "</p>";
