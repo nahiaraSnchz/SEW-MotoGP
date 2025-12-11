@@ -32,11 +32,11 @@
     <meta name ="viewport" content ="width=device-width, initial-scale=1.0" /> 
 
      <!-- Enlaces -->
-     <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
-     <link rel="stylesheet" type="text/css" href="estilo/layout.css" />
+     <link rel="stylesheet" type="text/css" href="../estilo/estilo.css" />
+     <link rel="stylesheet" type="text/css" href="../estilo/layout.css" />
 
      <!--FavIcon-->
-    <link rel="icon" href="multimedia/favicon.ico" />
+    <link rel="icon" href="../multimedia/favicon.ico" />
      
 </head>
 
@@ -45,6 +45,8 @@
     <header>
         <h1>Configuración de la Base de Datos</h1>
     </header>
+
+    <p>Herramientas para la gestión de la base de datos:</p>
 
     <main>
         <form method="POST" action="">
@@ -55,10 +57,6 @@
         </form>
 
     </main>
-
-    <footer>
-        <p>&copy; 2024 Nahiara Sánchez García</p>
-    </footer>
 
 </body>
 

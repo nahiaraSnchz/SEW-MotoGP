@@ -38,7 +38,10 @@ main > section > div {
   padding: 0;
 }
 
-
+button[type="submit"] {
+  display: block;
+  margin: 1.5rem 0;
+}
 
 
  @media (min-width: 320px) and (max-width: 799px) {

@@ -1,0 +1,11 @@
+PREGUNTAS:
+1. ¿Cuál es la primera noticia que aparece?
+2. ¿De qué piloto trata la aplicación?
+3. ¿Cuántas veces ha sido subcampeón del mundo?
+4. ¿Cuándo nació el piloto?
+5. ¿Cuál es el número de su dorsal?
+6. ¿Cuál es la población de la ciudad de Assen?
+7. ¿De qué tamaño es el tablero del juego de cartas de memoria?
+8. ¿Quién fue el ganador en la carrera llevada a cabo en el circuito TT Circuit Assen en 2025?
+9. ¿A qué hora fue la carrera en ese circuito?
+10. ¿En qué país se encuentra el circuito?
