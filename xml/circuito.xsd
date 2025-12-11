@@ -15,6 +15,7 @@
 				<xs:element ref="puntoOrigen" />
 				<xs:element ref="puntos" />
 				<xs:element ref="vencedor" />
+				<xs:element ref="tiempoVencedor" />
 				<xs:element ref="tresClasificados" />
 			</xs:sequence>
 			<xs:attribute name="nombre" type="xs:string" use="required" />
@@ -129,6 +130,8 @@
 
 	<xs:element name="sector" type="xs:int" />
 	<xs:element name="vencedor" type="xs:string" />
+
+	<xs:element name="tiempoVencedor" type="xs:string" />
 
 	<xs:element name="tresClasificados">
 		<xs:complexType>

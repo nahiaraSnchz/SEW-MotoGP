@@ -422,6 +422,7 @@ nombre="TT Circuit Assen" ciudad="Ciudad de Assen" pais="Paises Bajos" >
     </puntos>
 
     <vencedor>Marc Márquez</vencedor>
+    <tiempoVencedor>39:28.897</tiempoVencedor>
     <tresClasificados>
         <clasificado>Marc Márquez</clasificado>
         <clasificado>Marco Bezzecchi</clasificado>
