@@ -8,6 +8,14 @@ header {
     gap: 1em;
 }
 
+body section article img {
+    max-width: 40vw; 
+    width: 100%;
+    max-height: 50vh; 
+    display: block;
+    margin: 0 auto;
+}
+
 /*Especificidad 001 */
 nav {
     display: flex;
@@ -29,6 +37,8 @@ main > section > div {
   margin: 0;
   padding: 0;
 }
+
+
 
 
  @media (min-width: 320px) and (max-width: 799px) {
