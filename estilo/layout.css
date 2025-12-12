@@ -43,6 +43,17 @@ button[type="submit"] {
   margin: 1.5rem 0;
 }
 
+main form label {
+    display: block;
+    margin-top: 0.8rem; /* Separación superior entre campos (ej. 12-16px) */
+    margin-bottom: 0.3rem; /* Pequeño espacio debajo de la etiqueta */
+}
+
+textarea {
+  display:block;
+  margin: 1.5rem 0;
+}
+
 
  @media (min-width: 320px) and (max-width: 799px) {
     header {

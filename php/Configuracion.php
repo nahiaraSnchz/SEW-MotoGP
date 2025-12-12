@@ -192,6 +192,79 @@
 
         }
 
+        public function guardarResultadoCompleto(
+            $datosUsuario,
+            $dispositivoId,
+            $tiempo,
+            $completada,
+            $comentarioObservador
+        ) {
+
+            $stmt = null;
+
+            if (! $this->conexion->select_db($this->dbname)) {
+                throw new \Exception("No se pudo seleccionar la base de datos: " . $this->conexion->error);
+            }
+
+            $this->conexion->begin_transaction();
+
+            try {
+                // INSERCION EN USER_INFO
+                $sql_user = "INSERT INTO USER_INFO (profesion, edad, genero, periciaInformatica) VALUES (?, ?, ?, ?)";
+                $stmt = $this->conexion->prepare($sql_user);
+
+                $stmt->bind_param("sisi", $datosUsuario['profesion'], $datosUsuario['edad'], $datosUsuario['genero'], $datosUsuario['periciaInformatica']);
+
+                $stmt->execute();
+                $userId = $this->conexion->insert_id;
+                $stmt->close();
+                $stmt = null;
+
+                // INSERCION EN RESULTADO
+                $sql_res = "INSERT INTO RESULTADO (userId, dispositivoId, tiempoRealizacion, completada, comentario, propuestaMejora, valoracion) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+                if (!$stmt = $this->conexion->prepare($sql_res)) {
+                     throw new \Exception("Error prepare RESULTADO: " . $this->conexion->error);
+                }
+
+                 $completada_int = (int)$completada;
+
+                
+                if (!$stmt->bind_param("iidissi", $userId, $dispositivoId, $tiempo, $completada_int, $datosUsuario['comentario'], $datosUsuario['propuestaMejora'], $datosUsuario['valoracion'])) {
+                    throw new \Exception("Error en bind_param (RESULTADO): " . $stmt->error);
+                }
+
+                $stmt->execute();
+                $resultadoId = $this->conexion->insert_id;
+                $stmt->close();
+                $stmt = null;
+
+                // INSERCION EN OBSERVACIONES
+                if (!empty(trim($comentarioObservador))) {
+                    $sql_obs = "INSERT INTO OBSERVACION (resultadoId, comentario) VALUES (?, ?)";
+
+                    if (!$stmt = $this->conexion->prepare($sql_obs)) {
+                        throw new \Exception("Error prepare OBSERVACION: " . $this->conexion->error);
+                    }
+                    
+                    $stmt->bind_param("is", $resultadoId, $comentarioObservador);
+
+                    $stmt->execute();
+                    $stmt->close();
+                    $stmt = null;
+                }
+
+                // si todo ha ido bien, confirmar transacción
+                $this->conexion->commit();
+                return true;
+            }
+            catch (mysqli_sql_exception $e) {
+                $this->conexion->rollback();
+                $stmt->close();
+                throw new \Exception("Error al guardar los datos: " . $e->getMessage());
+            }
+        }
+
     }
 
 ?>
