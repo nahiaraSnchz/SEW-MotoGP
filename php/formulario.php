@@ -7,6 +7,24 @@
     // Iniciar sesion
     session_start();
 
+    // CARGAR PREGUNTAS DEL TXT
+    $archivo = 'preguntas.txt'; // Ajusta la ruta si es necesario
+    $preguntas = [];
+    if (file_exists($archivo)) {
+        $lineas = file($archivo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lineas as $linea) {
+            // Ignoramos la línea de título "PREGUNTAS:"
+            if (stripos($linea, 'PREGUNTAS:') !== false) continue;
+            
+            // Limpiamos el número inicial (ej: "1. ") usando expresión regular
+            $pregunta_limpia = preg_replace('/^\d+\.\s*/', '', $linea);
+            if (!empty($pregunta_limpia)) {
+                $preguntas[] = $pregunta_limpia;
+            }
+        }
+    }
+    $total_preguntas = count($preguntas);
+
     // Gestion cronometro
     if (isset($_SESSION['pruebaCronometro'])) {
         $miCronometro = $_SESSION['pruebaCronometro'];
@@ -19,6 +37,11 @@
     $formulario_visible = false;
     $datos_usuario_visible = false;
     $observador_visible = false;
+
+    // 4. LÓGICA DE NAVEGACIÓN (Fases: inicio, test, datos, observador)
+    if (!isset($_SESSION['fase'])) {
+        $_SESSION['fase'] = 'inicio';
+    }
 
     // recuperar datos temporales de la sesion si existen
     $datos_temporales = isset($_SESSION['datos_temporales']) ? $_SESSION['datos_temporales'] : [];
@@ -56,35 +79,31 @@
     }
     // MANEJAR ENVIO DE OBSERVACIONES (OBSERVADOR)
     else if (isset($_POST['finalizar_observacion'])) {
-        // recuperar datos
-        $datos_temporales = $_SESSION['datos_temporales'];
-        $estado_final = $_SESSION['estado_final_prueba'];
-
-        $comentario_observador = $_POST['observacion_texto'];
-
-        // insercion en BBDD
         $db_manager = new Configuracion();
-
         try {
             $db_manager->guardarResultadoCompleto(
-                $datos_temporales,
-                $datos_temporales['dispositivoId'],
-                $estado_final['tiempo'],
-                $estado_final['completada'],
-                $datos_temporales['comentario'],
-                $datos_temporales['propuestaMejora'],
-                $datos_temporales['valoracion'],
-                $comentario_observador
+                $_SESSION['datos_temporales'],
+                $_SESSION['datos_temporales']['dispositivoId'],
+                $_SESSION['estado_final_prueba']['tiempo'],
+                $_SESSION['estado_final_prueba']['completada'],
+                $_SESSION['datos_temporales']['comentario'],
+                $_SESSION['datos_temporales']['propuestaMejora'],
+                $_SESSION['datos_temporales']['valoracion'],
+                $_POST['observacion_texto']
             );
-            $mensaje_estado = "Datos guardados correctamente en la base de datos.";
-        }
-        catch (\Exception $e) {
-            $mensaje_estado = "Error al guardar los datos en la base de datos: " . $e->getMessage();
+            $mensaje_estado = "Datos guardados con éxito.";
+        } catch (\Exception $e) {
+            $mensaje_estado = "Error al guardar: " . $e->getMessage();
         }
 
+        // LIMPIEZA TOTAL PARA REINICIAR EL ESTADO
         $miCronometro->resetear();
-        unset($_SESSION['datos_temporales']);
-        unset($_SESSION['estado_final_prueba']);
+        session_unset(); 
+        session_destroy(); 
+        
+        $formulario_visible = false; 
+        $datos_usuario_visible = false;
+        $observador_visible = false;
     }
 
     // Procesar formulario
@@ -174,46 +193,15 @@
 
         <?php if ($formulario_visible): ?>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                
-                <h3>Pregunta 1:</h3>
-                <label for="p1">¿Cuál es la primera noticia que aparece en la sección de noticias?</label>
-                <input type="text" name="p1" />
-
-                <h3>Pregunta 2: Piloto (Identidad)</h3>
-                <label for="p2">¿De qué piloto trata la aplicación?</label>
-                <input type="text" name="p2" />
-                
-                <h3>Pregunta 3: Piloto (Subcampeonatos)</h3>
-                <label for="p3">¿Cuántas veces ha sido subcampeón del mundo?</label>
-                <input type="number" name="p3" min="0" />
-
-                <h3>Pregunta 4: Piloto (Nacimiento)</h3>
-                <label for="p4">¿Cuándo nació el piloto?</label>
-                <input type="text" name="p4" placeholder="Ej: DD/MM/AAAA" />
-
-                <h3>Pregunta 5: Piloto (Dorsal)</h3>
-                <label for="p5">¿Cuál es el número de su dorsal?</label>
-                <input type="number" name="p5" min="1" />
-
-                <h3>Pregunta 6: Circuito (Población)</h3>
-                <label for="p6">¿Cuál es la población de la ciudad de Assen?</label>
-                <input type="text" name="p6" />
-
-                <h3>Pregunta 7: Juego (Tamaño Tablero)</h3>
-                <label for="p7">¿De qué tamaño es el tablero del juego de cartas de memoria?</label>
-                <input type="text" name="p7" placeholder="Ej: 4x4 o 6x6" />
-
-                <h3>Pregunta 8: Carrera (Ganador 2025 - TT Circuit Assen)</h3>
-                <label for="p8">¿Quién fue el ganador en la carrera llevada a cabo en el circuito TT Circuit Assen en 2025?</label>
-                <input type="text" name="p8" />
-
-                <h3>Pregunta 9: Carrera (Hora - TT Circuit Assen)</h3>
-                <label for="p9">¿A qué hora fue la carrera en ese circuito?</label>
-                <input type="text" name="p9" placeholder="Ej: HH:MM" />
-
-                <h3>Pregunta 10: Circuito (País)</h3>
-                <label for="p10">¿En qué país se encuentra el circuito?</label>
-                <input type="text" name="p10" />
+            
+                <?php foreach ($preguntas as $indice => $texto_pregunta): ?>
+                    <?php $numero = $indice + 1; ?>
+                    <section>
+                        <h3>Pregunta <?php echo $numero; ?>:</h3>
+                        <label for="p<?php echo $numero; ?>"><?php echo htmlspecialchars($texto_pregunta); ?></label>
+                        <input type="text" name="p<?php echo $numero; ?>" id="p<?php echo $numero; ?>" />
+                    </section>
+                <?php endforeach; ?>
 
                 <button type="submit">Finalizar y Enviar Respuestas</button>
 
@@ -229,6 +217,7 @@
                 <label>Edad:</label><input type="number" name="edad" min="1" required />
                 <label>Género:</label>
                     <select name="genero" required>
+                        <option value="" disabled selected>Seleccione una opción...</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Femenino">Femenino</option>
                         <option value="Otro">Otro</option>
@@ -238,6 +227,7 @@
                 <h4>Valoración de la Prueba</h4>
                 <label>Dispositivo utilizado:</label>
                     <select name="dispositivoId" required>
+                        <option value="" disabled selected>Seleccione un dispositivo...</option>
                         <option value="1">Ordenador</option>
                         <option value="2">Tablet</option>
                         <option value="3">Teléfono</option>
@@ -255,7 +245,7 @@
             <h3>Fase de observación</h3>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                 <label for="observacion_texto">Anotaciones del observador:</label>
-                <textarea name="observacion_texto" rows="5" cols="50" placeholder="Escribe tus observaciones aquí..."></textarea>
+                <textarea name="observacion_texto" id="observacion_texto" rows="5" cols="50" placeholder="Escribe tus observaciones aquí..."></textarea>
 
                 <button type="submit" name="finalizar_observacion">Finalizar Observación</button>
             </form>
