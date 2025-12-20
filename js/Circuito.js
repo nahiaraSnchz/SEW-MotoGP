@@ -2,6 +2,7 @@ class Circuito {
 
     #soportaFile; // Indica si la API File está soportada
     #contenidoArchivo;
+    #inputSection;
 
     constructor() {
         this.comprobarApiFile();
@@ -30,12 +31,11 @@ class Circuito {
         if (!this.#soportaFile) return;
 
         // Crear un section para el input y el título
-        const $inputSection = $('<section></section>');
+        this.#inputSection = $('<section></section>');
 
         // Crear el título h3
         const $titulo = $('<h3>Introduzca archivo HTML:</h3>');
-        $inputSection.append($titulo);
-
+        this.#inputSection.append($titulo);
         // Crear el input
         const $input = $('<input type="file" accept=".html">');
 
@@ -50,7 +50,7 @@ class Circuito {
                 this.loadInfo();
 
                 // se indica que ya se cargo
-                $inputSection.append($('<p>').text('Archivo cargado: ' + archivo.name));
+                this.#inputSection.append($('<p>').text('Archivo cargado: ' + archivo.name));
                 $input.remove();
             };
 
@@ -61,9 +61,9 @@ class Circuito {
             lector.readAsText(archivo);
         });
 
-        $inputSection.append($input);
+        this.#inputSection.append($input);
 
-        $("main h2").first().after($inputSection);
+        $("main h2").first().after(this.#inputSection);
     }
 
 
@@ -80,14 +80,13 @@ class Circuito {
         const mainContent = doc.querySelector('main');
         if (!mainContent) return;
     
-        const $section = $('section').first();
+        const $section = $('<section></section>');
     
         $(mainContent).children('section').each(function() {
             $section.append($(this).clone());
         });
-    
-
-    
+        
+        this.#inputSection.after($section);
     }
 
 }
@@ -123,10 +122,6 @@ class CargadorSVG {
     leerArchivoSVG() {
         if (!this.#soportaFile) return;
 
-        // Crear un contenedor para mostrar el SVG
-        this.#contenedor = document.createElement("section");
-        document.querySelector("main").appendChild(this.#contenedor);
-
         // Crear un section para el input para que quede separado
         const $inputSection = $('<section></section>');
 
@@ -149,10 +144,15 @@ class CargadorSVG {
             const lector = new FileReader();
 
             lector.onload = (e) => {
+
+                // Crear un contenedor para mostrar el SVG
+                this.#contenedor = document.createElement("section");
+                
                 const contenido = e.target.result;
                 this.insertarSVG(contenido);
 
                 // se indica que ya se cargo
+                $inputSection.after(this.#contenedor);
                 $inputSection.append($('<p>').text('Archivo cargado: ' + archivo.name));
                 $input.remove();
             };
@@ -305,3 +305,19 @@ class CargadorKML {
         });
     }
 }
+
+$(function() {
+    try {
+        const circ = new Circuito();
+        circ.leerArchivoHTML();
+
+        const svg = new CargadorSVG();
+        svg.leerArchivoSVG();
+
+        const kml = new CargadorKML();
+        kml.leerArchivoKML();
+        
+    } catch (e) {
+        console.error("Error en la inicialización:", e);
+    }
+});

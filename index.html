@@ -47,35 +47,13 @@
 
     </header>
 
-    <p>Estas en: <strong>Inicio</strong></a></p>
+    <p>Estas en: Inicio</a></p>
 
     <h2>Página principal</h2>
 
-    <section>
-        <!-- Carrusel de imágenes -->
-    </section>
-    <script>
-        $(function() {
-            const carrusel = new Carrusel("motogp");
-            carrusel.getFotografias()
-                .then(fotos => {
-                    carrusel.procesarJSONFotografias(fotos);
-                    carrusel.mostrarFotografias();
-                });
-        });
-    </script>
+    <!-- Carrusel de imágenes -->
 
-    <section>
-        <!-- Noticias de MotoGP -->
-    </section>
-
-    <script>
-        $(function() {
-            const noticias = new Noticias('MotoGP');
-            noticias.buscar(); 
-        });
-    </script>
-
-
+    <!-- Noticias de MotoGP -->
+     
 </body>
 </html>

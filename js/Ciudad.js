@@ -60,7 +60,7 @@ class Ciudad {
     mostrarInformacionBasica() {
         var p = document.createElement("p");
         p.textContent = "El circuito está cerca de la " + this.getNombreCiudad() + ", en " + this.getPais();
-        document.body.appendChild(p);
+        $("main").append(p);
     }
 
     getInformacion() {
@@ -74,16 +74,16 @@ class Ciudad {
         lista.appendChild(infoCiudad);
         lista.appendChild(infoGentilicio);
         lista.appendChild(infoPoblacion);
-        document.body.appendChild(lista);
+        $("main").append(lista);
     }
 
     mostrarCoordenadas() {
         var h4 = document.createElement("h4");
         h4.textContent = "Coordenadas de la ciudad:";
-        document.body.appendChild(h4);
+        $("main").append(h4);
         var p = document.createElement("p");
         p.textContent = this.getCoordenadas();
-        document.body.appendChild(p);
+        $("main").append(p);
     }
 
     getMeteorologiaCarrera(fecha) {
@@ -102,28 +102,6 @@ class Ciudad {
             }
         });
     }
-
-   /*procesarJSONCarrera(datosJSON) {
-        let info = {
-            sunrise: datosJSON.daily.sunrise[0],
-            sunset: datosJSON.daily.sunset[0],
-            hourly: []
-        };
-
-        for (let i = 0; i < datosJSON.hourly.time.length; i++) {
-            info.hourly.push({
-                hora: datosJSON.hourly.time[i],
-                temperatura: datosJSON.hourly.temperature_2m[i],
-                sensacionTermica: datosJSON.hourly.apparent_temperature[i],
-                lluvia: datosJSON.hourly.rain[i],
-                humedad: datosJSON.hourly.relativehumidity_2m[i],
-                vientoVelocidad: datosJSON.hourly.windspeed_10m[i],
-                vientoDireccion: datosJSON.hourly.winddirection_10m[i]
-            });
-        }
-
-        return info;
-    } */
 
      procesarJSONCarrera(datosJSON) {
         // La hora de la carrera es fija: 14:00
@@ -164,23 +142,26 @@ class Ciudad {
 
     mostrarEnHTML(info) {
         // Seleccionamos el segundo <section> sin usar id ni class
-        let contenedor = $("section").eq(1);
-        contenedor.empty(); // Limpiamos contenido previo
+        let $contenedor = $("<section></section>");
+        $contenedor.empty(); // Limpiamos contenido previo
 
-        contenedor.append($("<h2>").text(`Datos meteorológicos para ${this.getNombreCiudad()}, ${this.getPais()} el día 29 de junio de 2025`));
+        $contenedor.append($("<h2>").text(`Datos meteorológicos para ${this.getNombreCiudad()}, ${this.getPais()} el día 29 de junio de 2025`));
 
         // Salida y puesta del sol
-        contenedor.append($("<h3>").text("Salida y puesta de sol"));
+        $contenedor.append($("<h3>").text("Salida y puesta de sol"));
 
         let listaMeteorologia = $("<ul>");
 
+        const amanecerHora = info.sunrise.split("T")[1];
+        const ocasoHora = info.sunset.split("T")[1];
+
         // Añadimos los elementos como <li>
-        listaMeteorologia.append($("<li>").text("Salida del sol: " + info.sunrise));
-        listaMeteorologia.append($("<li>").text("Puesta del sol: " + info.sunset)); 
+        listaMeteorologia.append($("<li>").text("Salida del sol: " + `${amanecerHora}`));
+        listaMeteorologia.append($("<li>").text("Puesta del sol: " + `${ocasoHora}`)); 
 
-        contenedor.append(listaMeteorologia);
+        $contenedor.append(listaMeteorologia);
 
-        contenedor.append($("<h3>").text("Datos a la hora de la carrera (14:00)"));
+        $contenedor.append($("<h3>").text("Datos a la hora de la carrera (14:00)"));
         let listaHoras = $("<ul>");
         // Datos por hora
         if (info.hourly) { 
@@ -201,7 +182,9 @@ class Ciudad {
         } else {
             listaHoras.append($("<li>").text("No se encontraron datos específicos para la hora de la carrera (14:00)."));
         }
-        contenedor.append(listaHoras);
+        $contenedor.append(listaHoras);
+
+        $("main").append($contenedor);
     }
 
 
@@ -298,11 +281,11 @@ class Ciudad {
 
     mostrarEnHTMLEntrenos(info) {
         // Seleccionamos el tercer <section> para entrenos (por ejemplo)
-        let contenedor = $("section").eq(2);
-        contenedor.empty();
+        let $contenedor = $("<section></section>");
+        $contenedor.empty();
     
         // Título
-        contenedor.append(
+        $contenedor.append(
             $("<h2>").text(`Medias meteorológicas de los días de entrenamientos`)
         );
     
@@ -310,7 +293,7 @@ class Ciudad {
         info.dias.forEach(dia => {
     
             // Subtítulo del día
-            contenedor.append(
+            $contenedor.append(
                 $("<h3>").text(`Día ${dia.fecha}`)
             );
     
@@ -330,10 +313,23 @@ class Ciudad {
                 $("<li>").text(`Viento medio: ${dia.vientoMedio} m/s`)
             );
 
-            contenedor.append(lista);
+            $contenedor.append(lista);
         });
+
+        $("main").append($contenedor);
     }
 
 
 
 }
+
+$(function() {
+    var ciudad = new Ciudad("Ciudad de Assen", "Países Bajos", "assenés");
+    ciudad.rellenarDatosSecundarios(66215, 52.9927553, 6.5642269, 14.2866527);
+    ciudad.mostrarInformacionBasica();
+    ciudad.getInformacion();
+    ciudad.mostrarCoordenadas();
+    let fechaCarrera = "2025-06-29"; 
+    ciudad.getMeteorologiaCarrera(fechaCarrera);
+    ciudad.getMeteorologiaEntrenos(fechaCarrera);
+});

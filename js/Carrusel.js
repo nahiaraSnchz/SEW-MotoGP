@@ -48,16 +48,23 @@ class Carrusel {
             return;
         }
 
+        // creo el section contenedor
+        const $section = $("<section></section>");
+
         const $article = $("<article></article>");
 
         const $h3 = $(`<h3>Imágenes del circuito de ${this.#busqueda}</h3>`);
+        const $h3_vacio = $('<h3>Carrusel</h3>');
+        $section.append($h3_vacio);
         $article.append($h3);
 
         const primeraFoto = this.#fotos[this.#actual];
         this.#img = $("<img>").attr("src", primeraFoto.url).attr("alt", primeraFoto.titulo);
         $article.append(this.#img);
 
-        $("section").first().append($article);
+        $section.append($article);
+        // insertar el section
+        $("h2").after($section);
 
         // Cambio automático cada 3 segundos
         setInterval(this.cambiarFotografia.bind(this), 3000);
@@ -72,3 +79,14 @@ class Carrusel {
     }
 }
 
+
+// --- EJECUCIÓN ---
+// Esto asegura que el código espere a que el HTML esté cargado
+$(function() {
+    const carrusel = new Carrusel("motogp");
+    carrusel.getFotografias()
+        .then(fotos => {
+            carrusel.procesarJSONFotografias(fotos);
+            carrusel.mostrarFotografias();
+        });
+});

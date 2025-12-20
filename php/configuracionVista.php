@@ -46,10 +46,12 @@
         <h1>Configuración de la Base de Datos</h1>
     </header>
 
+    <p>Estas en: <a href="../index.html" title="Página Inicio">Inicio</a> | Configuración BBDD</p>
+
     <p>Herramientas para la gestión de la base de datos:</p>
 
     <main>
-        <form method="POST" action="">
+        <form method="POST">
             <button type="submit" name="reiniciar">Reiniciar BBDD</button>
             <button type="submit" name="eliminar">Eliminar BBDD</button>
             <button type="submit" name="exportar">Exportar BBDD</button>
@@ -57,6 +59,12 @@
         </form>
 
     </main>
+
+    <?php if (!empty($mensaje)): ?>
+            <section>
+                <?php echo $mensaje; ?>
+            </section>
+    <?php endif; ?>
 
 </body>
 

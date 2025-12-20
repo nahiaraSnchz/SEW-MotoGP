@@ -154,11 +154,11 @@
     <header>
 
         <!-- Datos con el contenidos que aparece en el navegador -->
-        <h1><a href="index.html" title="Página Inicio">MotoGP-Desktop</a></h1>
+        <h1><a href="../index.html" title="Página Inicio">MotoGP-Desktop</a></h1>
 
     </header>
 
-    <p>Estas en: <a href="index.html" title="Página Inicio">Inicio</a> | <strong>Formulario Pruebas Usabilidad</strong></p>
+    <p>Estas en: <a href="../index.html" title="Página Inicio">Inicio</a> | Formulario Pruebas Usabilidad</p>
 
     <main>
         <h2>Formulario de Pruebas de Usabilidad</h2>

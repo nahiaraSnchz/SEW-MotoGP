@@ -61,22 +61,31 @@ class Noticias {
     }
 
     mostrarNoticias(noticias) {
-        // Seleccionamos la sección donde vamos a poner las noticias
-        let contenedor = $("section").last(); 
-        contenedor.empty(); // Limpiamos contenido previo
+        // creo el section contenedor
+        const $contenedor = $("<section></section>");
 
-        contenedor.append($("<h2>").text(`Noticias de MotoGP`));
+        $contenedor.empty(); // Limpiamos contenido previo
+
+        $contenedor.append($("<h2>").text(`Noticias de MotoGP`));
 
         noticias.forEach(noticia => {
             // Creamos un div por cada noticia
-            let noticiaDiv = $("<section>").addClass("noticia");
+            let noticiaSec = $("<section>").addClass("noticia");
 
-            noticiaDiv.append($("<h3>").text(noticia.titulo));
-            noticiaDiv.append($("<p>").text(noticia.descripcion));
-            noticiaDiv.append($("<p>").html(`Fuente: ${noticia.fuente} | <a href="${noticia.enlace}" target="_blank">Leer más</a>`));
+            noticiaSec.append($("<h3>").text(noticia.titulo));
+            noticiaSec.append($("<p>").text(noticia.descripcion));
+            noticiaSec.append($("<p>").html(`Fuente: ${noticia.fuente} | <a href="${noticia.enlace}" target="_blank">Leer más</a>`));
 
-            contenedor.append(noticiaDiv);
+            $contenedor.append(noticiaSec);
         });
+
+        $("body").append($contenedor);
     }
 
 }
+
+
+$(function() {
+        const noticias = new Noticias('MotoGP');
+        noticias.buscar(); 
+});

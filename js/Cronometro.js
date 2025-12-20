@@ -3,20 +3,28 @@ class Cronometro {
     #tiempo;
     #inicio = null;
     #corriendo = null;
+    #elemento;
 
-    constructor() {
+    constructor(elemento) {
+        this.#elemento = elemento;
         this.#tiempo = 0;
     }
 
     arrancar() {
+        if (this.#corriendo) {
+            return; // ya está corriendo
+        }
         try {
-            this.#inicio = Temporal.Now.instant();
+            // this.#inicio = Temporal.Now.instant();
+            this.#inicio = Temporal.Now.instant().subtract({ milliseconds: this.#tiempo });
         }
         catch (error) {
-            this.#inicio = new Date();
+            // this.#inicio = new Date();
+            this.#inicio = new Date() - this.#tiempo;
         }
         this.#corriendo = setInterval(this.actualizar.bind(this), 100);
         this.mostrar();
+        console.log("Cronómetro arrancado");
     }
 
     actualizar() {
@@ -44,13 +52,14 @@ class Cronometro {
                     String(decimas);
         
         let parrafo = document.querySelector("main p");
-        if (parrafo) {
-            parrafo.textContent = texto;
-        }
+        if (this.#elemento) this.#elemento.textContent = texto;
     }
 
     parar() {
-        clearInterval(this.#corriendo)
+        if (this.#corriendo) {
+            clearInterval(this.#corriendo);
+            this.#corriendo = null;
+        }
     }
 
     reiniciar() {
@@ -60,3 +69,17 @@ class Cronometro {
     }
 
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Seleccionamos los botones
+    const pantalla = document.querySelector("main p");
+    const botones = document.querySelectorAll("main button");
+    const cronometro = new Cronometro(pantalla);
+
+    botones[0].addEventListener('click', () => cronometro.arrancar());
+    botones[1].addEventListener('click', () => cronometro.parar());
+    botones[2].addEventListener('click', () => cronometro.reiniciar());
+    
+    console.log("Listeners asignados correctamente.");
+});

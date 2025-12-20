@@ -21,36 +21,32 @@
 
         // Método para reiniciar la BBDD
         public function reiniciarBaseDatos() {
-            if ($this->conexion->select_db($this->dbname)) {
-                $tablas = ['OBSERVACION', 'RESULTADO', 'USER_INFO', 'DISPOSITIVO'];
-                $errores = [];
+            try {
+                if ($this->conexion->select_db($this->dbname)) {
+                    $tablas = ['OBSERVACION', 'RESULTADO', 'USER_INFO', 'DISPOSITIVO'];
+                    $errores = [];
 
-                // desactivar comprobacion de claves foraneas
-                $this->conexion->query("SET FOREIGN_KEY_CHECKS=0;");
+                    // desactivar comprobacion de claves foraneas
+                    $this->conexion->query("SET FOREIGN_KEY_CHECKS=0;");
 
-                foreach ($tablas as $tabla) {
-                    if ($tabla !== 'DISPOSITIVO') {
-                        if(!$this->conexion->query("TRUNCATE TABLE $tabla")) {
-                            $errores[] = "Error al truncar la tabla $tabla: " . $this->conexion->error;
+                    foreach ($tablas as $tabla) {
+                        if ($tabla !== 'DISPOSITIVO') {
+                            if(!$this->conexion->query("TRUNCATE TABLE $tabla")) {
+                                $errores[] = "Error al truncar la tabla $tabla: " . $this->conexion->error;
+                            }
                         }
                     }
-                }
 
-                // Reactivar comprobacion de claves foraneas
-                $this->conexion->query("SET FOREIGN_KEY_CHECKS=1;");
+                    // Reactivar comprobacion de claves foraneas
+                    $this->conexion->query("SET FOREIGN_KEY_CHECKS=1;");
 
-                if (empty($errores)) {
-                    echo "Base de datos reiniciada correctamente.";
-                } else {
-                    foreach ($errores as $error) {
-                        echo $error . "\n";
-                    }
+                    return empty($errores) ? "Base de datos reiniciada correctamente." : implode(", ", $errores);
                 }
+                return "No se pudo seleccionar la base de datos: " . $this->conexion->error;
             }
-            else {
-                echo "No se pudo seleccionar la base de datos: " . $this->conexion->error;
+            catch (Exception $e) {
+                return "Error al reiniciar la base de datos: " . $this->dbname;
             }
-        
         }
 
 
@@ -69,47 +65,54 @@
 
         // Exportar BBDD en formato CSV
         public function exportarBaseDatosCSV($tabla = 'RESULTADO') {
-            $conexion_db = new mysqli($this->host, $this->user, $this->password, $this->dbname);
 
-            if ($conexion_db->connect_error) {
-                die("Conexion fallida: " . $conexion_db->connect_error);
+            try {
+                $conexion_db = new mysqli($this->host, $this->user, $this->password, $this->dbname);
+
+                if ($conexion_db->connect_error) {
+                    die("Conexion fallida: " . $conexion_db->connect_error);
+                }
+
+                $query = "SELECT * FROM $tabla";
+                $resultado = $conexion_db->query($query);
+
+                if ($resultado === FALSE) {
+                    header("HTTP/1.0 404 Not Found");
+                    return "Error al consultar la tabla $tabla" . $conexion_db->error;
+                }
+                
+                // nombres de columnas
+                $cabecera = [];
+                while ($campo = $resultado->fetch_field()) {
+                    $cabecera[] = $campo->name;
+                }
+
+                // Definir cabeceras archivo
+                $f = fopen('php://memory', 'w');
+
+                // Escribir cabecera en el archivo
+                fputcsv($f, $cabecera, ';'); 
+
+                // escribir datos
+                while ($fila = $resultado->fetch_assoc()) {
+                    fputcsv($f, $fila, ';');
+                }
+
+                fseek($f, 0); // mueve el puntero al inicio del archivo
+
+                // Establecer cabeceras
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' . $tabla . '_' . date('Ymd_His') . '.csv"');
+
+                // devolver el contenido del archivo
+                fpassthru($f);
+                fclose($f);
+                exit();
             }
-
-            $query = "SELECT * FROM $tabla";
-            $resultado = $conexion_db->query($query);
-
-            if ($resultado === FALSE) {
-                header("HTTP/1.0 404 Not Found");
-                return "Error al consultar la tabla $tabla" . $conexion_db->error;
+            catch (Exception $e) {
+                return "Error al exportar la tabla $tabla: " . $this->dbname;
             }
             
-            // nombres de columnas
-            $cabecera = [];
-            while ($campo = $resultado->fetch_field()) {
-                $cabecera[] = $campo->name;
-            }
-
-            // Definir cabeceras archivo
-            $f = fopen('php://memory', 'w');
-
-            // Escribir cabecera en el archivo
-            fputcsv($f, $cabecera, ';'); 
-
-            // escribir datos
-            while ($fila = $resultado->fetch_assoc()) {
-                fputcsv($f, $fila, ';');
-            }
-
-            fseek($f, 0); // mueve el puntero al inicio del archivo
-
-            // Establecer cabeceras
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="' . $tabla . '_' . date('Ymd_His') . '.csv"');
-
-            // devolver el contenido del archivo
-            fpassthru($f);
-            fclose($f);
-            exit();
         }
 
         // Recrear la BBDD
@@ -178,17 +181,10 @@
             ";
 
             if ($this->conexion->multi_query($sql)) {
-                do {
-                    if ($resultado = $this->conexion->store_result()) {
-                        $resultado->free();
-                    }
-                }
-                while ($this->conexion->more_results() && $this->conexion->next_result());
-                return "Estructura de la BBDD '{$this->dbname}'recreada correctamente";
+            while ($this->conexion->more_results() && $this->conexion->next_result()); 
+                return "Estructura de la BBDD '{$this->dbname}' recreada correctamente.";
             }
-            else {
-                return "Error al recrear la BBDD: " . $this->conexion->error;
-            }
+            return "Error al recrear la BBDD: " . $this->conexion->error;
 
         }
 

@@ -1,6 +1,51 @@
 <?php
-    session_start();
     require_once 'cronometro.php';
+    session_start();
+
+    // Lógica para manejar el cronómetro
+    if (isset($_SESSION['miCronometro'])) {
+        $miCronometro = $_SESSION['miCronometro'];
+    }
+    else {
+        $miCronometro = new Cronometro();
+    }
+
+    $mensaje = "";
+
+    // Manejar las acciones del formulario
+    if (count($_POST) > 0) {
+        if (isset($_POST['arrancar'])) {
+            $miCronometro->arrancar();
+            $mensaje = "Cronómetro arrancado.";
+        } 
+        if (isset($_POST['parar'])) {
+            // verificar si el cronómetro está en marcha
+            if ($miCronometro->getInicio() !== null) {
+                $miCronometro->parar();
+                $mensaje = "Cronómetro parado.";
+            }
+            else {
+                $mensaje = "El cronómetro no está en marcha.";
+            }
+        }
+        if (isset($_POST['mostrar'])) {
+            $tiempo_actual = $miCronometro->mostrar();
+            $estado = ($miCronometro->getInicio() !== null) ? "en marcha" : "detenido";
+            $mensaje = "Tiempo actual: " . $tiempo_actual . " (Cronómetro " . $estado . ").";
+        }
+        if (isset($_POST['resetear'])) {
+            $miCronometro->resetear();
+            $mensaje = "Cronómetro reiniciado.";
+        }
+
+        // guardar objeto completo en la sesión
+        $_SESSION['miCronometro'] = $miCronometro;
+
+        if ($mensaje) {
+            echo "<p>" . $mensaje . "</p>";
+        }
+        
+    }
 ?>
 
 <!DOCTYPE HTML>
@@ -36,7 +81,7 @@
 
     </header>
 
-    <p>Estas en: <a href="index.html" title="Página Inicio">Inicio</a> | <strong>Cronómetro</strong></p>
+    <p>Estas en: <a href="index.html" title="Página Inicio">Inicio</a> | Cronómetro</p>
 
     <h2>Cronómetro</h2>
 

@@ -22,11 +22,20 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
         crossorigin="anonymous"></script>
 
+    <script>
+        // Esto asegura que la función exista globalmente antes de que llegue Google
+        window.iniciarMapa = function() {
+            console.log("Google Maps API: Callback detectado correctamente.");
+        };
+    </script>
+
+
+
     <!-- API Google Maps -->
     <script 
         async 
         defer 
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDywIqukQEj5P08mxBlDDRjjQSX-3ymanI&loading=async&libraries=marker&callback=inicializarMapa"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDywIqukQEj5P08mxBlDDRjjQSX-3ymanI&loading=async&libraries=marker&callback=iniciarMapa"
     ></script>
 
     <script src="js/Circuito.js"></script>
@@ -53,29 +62,10 @@
 
     </header>
 
-    <p>Estas en: <a href="piloto.html" title="Página Inicio">Inicio</a> | <strong>Circuito</strong></p>
+    <p>Estas en: <a href="piloto.html" title="Página Inicio">Inicio</a> | Circuito</p>
 
     <main>
-        <h2>Circuito de MotoGP-Desktop</h2>
-
-        <section>
-            <!-- Se mostrará la info del circuito -->
-        </section>
-
-        <script>
-            var circuitoHTML = new Circuito();
-            circuitoHTML.leerArchivoHTML();
-
-            var cargadorSVG = new CargadorSVG();
-            cargadorSVG.leerArchivoSVG();
-
-            var cargadorKML = new CargadorKML();
-            cargadorKML.leerArchivoKML();
-            function inicializarMapa() {
-                console.log("Google Maps API cargada y callback ejecutado.");
-            }
-    
-        </script>
+        <h2>Mostrar datos del circuito</h2>
     </main>
     
 </body>
