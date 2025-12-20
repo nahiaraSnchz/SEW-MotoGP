@@ -64,7 +64,7 @@
 
 
         // Exportar BBDD en formato CSV
-        public function exportarBaseDatosCSV($tabla = 'RESULTADO') {
+        /* public function exportarBaseDatosCSV($tabla = 'RESULTADO') {
 
             try {
                 $conexion_db = new mysqli($this->host, $this->user, $this->password, $this->dbname);
@@ -113,6 +113,69 @@
                 return "Error al exportar la tabla $tabla: " . $this->dbname;
             }
             
+        } */
+
+        public function exportarBaseDatosCSV() {
+            try {
+                $conexion_db = new mysqli($this->host, $this->user, $this->password, $this->dbname);
+
+                if ($conexion_db->connect_error) {
+                    die("Conexión fallida: " . $conexion_db->connect_error);
+                }
+
+                $query = "
+                    SELECT 
+                        u.profesion, u.edad, u.genero, u.periciaInformatica,
+                        d.nombre AS dispositivo,
+                        r.tiempoRealizacion, r.completada, r.comentario AS comentario_usuario, 
+                        r.propuestaMejora, r.valoracion,
+                        o.comentario AS anotacion_observador
+                    FROM RESULTADO r
+                    INNER JOIN USER_INFO u ON r.userId = u.userId
+                    INNER JOIN DISPOSITIVO d ON r.dispositivoId = d.dispositivoId
+                    LEFT JOIN OBSERVACION o ON r.resultadoId = o.resultadoId
+                ";
+
+                $resultado = $conexion_db->query($query);
+
+                if ($resultado === FALSE) {
+                    header("HTTP/1.0 404 Not Found");
+                    return "Error al consultar los datos: " . $conexion_db->error;
+                }
+
+                $f = fopen('php://memory', 'w');
+
+                // Generar cabeceras personalizadas para que el Excel sea legible
+                $cabeceras = [
+                    'Profesión', 'Edad', 'Género', 'Pericia', 
+                    'Dispositivo', 'Tiempo (seg)', 'Completada', 
+                    'Comentario Usuario', 'Propuesta Mejora', 'Valoración', 
+                    'Observaciones del Observador'
+                ];
+                fputcsv($f, $cabeceras, ';'); 
+
+                // Escribir los datos combinados
+                while ($fila = $resultado->fetch_assoc()) {
+                    // Convertir el booleano 'completada' a texto 
+                    $fila['completada'] = $fila['completada'] ? 'SÍ' : 'NO';
+                    fputcsv($f, $fila, ';');
+                }
+
+                fseek($f, 0);
+
+                header('Content-Type: text/csv; charset=utf-8');
+                header('Content-Disposition: attachment; filename="Informe_Usabilidad_' . date('Ymd_His') . '.csv"');
+
+                // Para que excel reconozca correctamente los acentos y eñes
+                echo "\xEF\xBB\xBF"; 
+                
+                fpassthru($f);
+                fclose($f);
+                exit();
+            }
+            catch (Exception $e) {
+                return "Error al exportar: " . $e->getMessage();
+            }
         }
 
         // Recrear la BBDD
