@@ -86,9 +86,6 @@
                 $_SESSION['datos_temporales']['dispositivoId'],
                 $_SESSION['estado_final_prueba']['tiempo'],
                 $_SESSION['estado_final_prueba']['completada'],
-                $_SESSION['datos_temporales']['comentario'],
-                $_SESSION['datos_temporales']['propuestaMejora'],
-                $_SESSION['datos_temporales']['valoracion'],
                 $_POST['observacion_texto']
             );
             $mensaje_estado = "Datos guardados con éxito.";
