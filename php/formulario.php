@@ -198,8 +198,10 @@
                     <?php $numero = $indice + 1; ?>
                     <section>
                         <h3>Pregunta <?php echo $numero; ?>:</h3>
-                        <label for="p<?php echo $numero; ?>"><?php echo htmlspecialchars($texto_pregunta); ?></label>
-                        <input type="text" name="p<?php echo $numero; ?>" id="p<?php echo $numero; ?>" />
+                        <label>
+                            <?php echo htmlspecialchars($texto_pregunta); ?>
+                            <input type="text" name="p<?php echo $numero; ?>" />
+                        </label>
                     </section>
                 <?php endforeach; ?>
 
@@ -215,13 +217,14 @@
                 <h4>Datos Personales</h4>
                 <label>Profesión:</label><input type="text" name="profesion" required />
                 <label>Edad:</label><input type="number" name="edad" min="1" required />
-                <label>Género:</label>
+                <label>Género: 
                     <select name="genero" required>
                         <option value="" disabled selected>Seleccione una opción...</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Femenino">Femenino</option>
                         <option value="Otro">Otro</option>
                     </select>
+                </label>
                 <label>Pericia Informática (1-10):</label><input type="number" name="periciaInformatica" min="1" max="10" required />
 
                 <h4>Valoración de la Prueba</h4>
@@ -244,8 +247,10 @@
         <?php if ($observador_visible): ?>
             <h3>Fase de observación</h3>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                <label for="observacion_texto">Anotaciones del observador:</label>
-                <textarea name="observacion_texto" id="observacion_texto" rows="5" cols="50" placeholder="Escribe tus observaciones aquí..."></textarea>
+                <label>
+                    Anotaciones del observador:
+                    <textarea name="observacion_texto" rows="5" cols="50" placeholder="Escribe tus observaciones aquí..."></textarea>
+                </label>
 
                 <button type="submit" name="finalizar_observacion">Finalizar Observación</button>
             </form>

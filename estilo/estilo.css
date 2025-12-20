@@ -8,9 +8,8 @@
     - Enlaces: #0000ff
     - Enlaces usados: #050A30
     - Titulos: #000C66
-    - Azul oscuro oscuro: #050A30
-    - Baby blue: #E7F2F8
-    - Rojo: #F51720
+    - Azul oscuro oscuro (titulos): #050A30
+    - Rojo (titulos): #F51720
 */
 
 /*Especificidad 001 */
@@ -102,6 +101,7 @@ ol{
     list-style-type: decimal;
 }
 
+/*Especificidad 002*/
 dl dt{
     text-decoration: underline;
     font-weight: 700;

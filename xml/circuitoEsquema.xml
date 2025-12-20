@@ -20,7 +20,7 @@ nombre="TT Circuit Assen" ciudad="Ciudad de Assen" pais="Paises Bajos" >
     </referencias>
 
     <foto>multimedia/AssenFoto.jpg</foto>
-    <video></video>
+    <video>multimedia/alexRins-video.mp4</video>
 
     <puntoOrigen>
         <coordenada>

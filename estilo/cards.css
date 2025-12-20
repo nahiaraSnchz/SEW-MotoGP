@@ -33,7 +33,7 @@ article img {
     height: 100%;
     position: absolute;
     border-radius: 0.5em;
-    background: #050A30;
+    background: #050A30;            /* Advertencia: Hereda color de fondo del elemento h3 */
     backface-visibility: hidden;
 }
 

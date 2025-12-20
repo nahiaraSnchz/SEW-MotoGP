@@ -15,9 +15,7 @@ class Circuito {
         } else {
             this.#soportaFile = false;
             $("body").prepend(
-                $("<p>").text("ATENCIÓN: Su navegador no soporta la API File, algunas funciones no estarán disponibles.")
-                        .css({color: "red", "font-weight": "bold"})
-            );
+                $("<p>").text("ATENCIÓN: Su navegador no soporta la API File, algunas funciones no estarán disponibles."));
         }
         return this.#soportaFile;
     }
@@ -37,7 +35,9 @@ class Circuito {
         const $titulo = $('<h3>Introduzca archivo HTML:</h3>');
         this.#inputSection.append($titulo);
         // Crear el input
-        const $input = $('<input type="file" accept=".html">');
+        // Se le asocia una etiqueta para mejor accesibilidad
+        const $label = $('<label for="input-html">Seleccione el archivo HTML del circuito:</label>');
+        const $input = $('<input type="file" id="input-html" accept=".html">');
 
         $input.on('change', (event) => {
             const archivo = event.target.files[0];
@@ -61,7 +61,7 @@ class Circuito {
             lector.readAsText(archivo);
         });
 
-        this.#inputSection.append($input);
+        this.#inputSection.append($label).append($input);
 
         $("main h2").first().after(this.#inputSection);
     }
@@ -128,7 +128,9 @@ class CargadorSVG {
         const $titulo = $('<h3>Introduzca archivo SVG:</h3>');
         $inputSection.append($titulo);
 
-        const $input = $('<input type="file" accept=".svg">');
+        // Se le asocia una etiqueta para mejor accesibilidad
+        const $label = $('<label for="input-svg">Seleccione el archivo SVG del circuito:</label>');
+        const $input = $('<input type="file" id="input-svg" accept=".svg">');
 
         $input.on("change", (event) => {
             const archivo = event.target.files[0];
@@ -164,7 +166,7 @@ class CargadorSVG {
             lector.readAsText(archivo);
         });
 
-        $inputSection.append($input);
+        $inputSection.append($label).append($input);
         $("main").append($inputSection); // Se añade el section al body para que quede separado
     }
     
@@ -217,8 +219,11 @@ class CargadorKML {
         const $titulo = $('<h3>Introduzca archivo KML:</h3>');
         $inputSection.append($titulo);
 
-        const $input = $('<input type="file" accept=".kml">');
-        $inputSection.append($input);
+        // Se le asocia una etiqueta para mejor accesibilidad
+        const $label = $('<label for="input-kml">Seleccione el archivo KML del circuito:</label>');
+        const $input = $('<input type="file" id="input-kml" accept=".kml">');
+
+        $inputSection.append($label).append($input);
         
         // Crear contenedor para el mapa
         this.#contenedor = document.createElement("div");

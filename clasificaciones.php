@@ -51,7 +51,7 @@
                 $posicion = 1;
 
                 foreach ($clasificados->clasificado as $piloto) {
-                    echo "<li>Posición $posicion: $piloto</li>";
+                    echo "<li>$piloto</li>";
                     $posicion++;
                 }
                 echo "</ol>";

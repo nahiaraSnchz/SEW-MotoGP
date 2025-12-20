@@ -8,6 +8,7 @@ header {
     gap: 1em;
 }
 
+/*Especificidad 004 */
 body section article img {
     max-width: 40vw; 
     width: 100%;
@@ -19,95 +20,114 @@ body section article img {
 /*Especificidad 001 */
 nav {
     display: flex;
-    flex-direction: row; /* enlaces en fila */
-    gap: 1em;            /* espacio entre enlaces */
+    flex-direction: row;
+    gap: 1em;
     padding-bottom: 1em;
 }
 
+/*Especificidad 001 */
 article {
-  width: 100%;         /* ancho relativo al body */
-  text-align: center; /* centra contenido dentro del article */
+  width: 100%;        
+  text-align: center; 
 }
 
-/* Contenedor principal del mapa dinámico */
+/*Especificidad 003 */
 main > section > div {
-  width: 100%;        /* Ocupa todo el ancho disponible */
-  height: 70vh;       /* Ocupa el 70% de la altura de la ventana */
-  min-height: 300px;  /* Altura mínima para que no colapse en pantallas pequeñas */
+  width: 100%;        
+  height: 70vh;       
+  min-height: 18.75rem;
   margin: 0;
   padding: 0;
 }
 
+/*Especificidad 011 */
 button[type="submit"] {
   display: block;
   margin: 1.5rem 0;
 }
 
+/*Especificidad 011 */
+input[type="file"] {
+  display: block;
+  margin: 1.5rem 0;
+}
+
+/*Especificidad 003 */
 main form label {
     display: block;
     margin-top: 0.8rem; /* Separación superior entre campos (ej. 12-16px) */
     margin-bottom: 0.3rem; /* Pequeño espacio debajo de la etiqueta */
 }
 
+/*Especificidad 001 */
 textarea {
   display:block;
   margin: 1.5rem 0;
 }
 
 
- @media (min-width: 320px) and (max-width: 799px) {
-    header {
-      flex-direction: column;
-      align-items: flex-start;
-      width: 100%;
-      overflow-x: hidden; /* Evita que flex se desborde */
-    }
+@media (min-width: 320px) and (max-width: 799px) {
+
+  /*Especificidad 001 */
+  header {
+    flex-direction: column;       /* Advertencia: Redefinición para pantallas pequeñas */
+    align-items: flex-start;      /* Advertencia: Redefinición para pantallas pequeñas */
+    width: 100%;
+    overflow-x: hidden; /* Evita que flex se desborde */
+  }
   
-    header h1 {
-      margin-bottom: 0.5em;
-    }
+  /*Especificidad 002 */
+  header h1 {
+    margin-bottom: 0.5em;
+  }
   
-    nav {
-      flex-direction: column;
-      gap: 0.5em;
-      padding-bottom: 0;
-      width: 100%;
-      overflow-x: hidden;
-    }
+  /*Especificidad 001 */
+  nav {
+    flex-direction: column;      /* Advertencia: Redefinición para pantallas pequeñas */
+    gap: 0.5em;                  /* Advertencia: Redefinición para pantallas pequeñas */  
+    padding-bottom: 0;          /* Advertencia: Redefinición para pantallas pequeñas */
+    width: 100%;
+    overflow-x: hidden;
+  }
   
-    body {
-      overflow-x: hidden; 
-      margin: 0;
-      padding: 0;
-    }
+  /*Especificidad 001 */
+  body {
+    overflow-x: hidden; 
+    margin: 0;
+    padding: 0;
+  }
 
-    body > p:first-of-type {
-        display: none;
-    }
+  /*Especificidad 012 */
+  body > p:first-of-type {
+      display: none;
+  }
 
-    /* Carrusel móvil */
-    article {
-      box-sizing: border-box;
-      max-width: 100%;
-      padding: 0.5em;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5em;
-    }
+  /* Carrusel móvil */
+  /*Especificidad 001 */
+  article {
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 0.5em;
+    text-align: center;         /* Advertencia: Redefinición para pantallas pequeñas */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+  }
 
-    article h2 + img {
-      width: 100%;        
-      height: auto;       
-      max-height: 80vh;    
-      display: block;
-      margin: 0 auto;
-      object-fit: contain; 
-    }
+  /*Especificidad 003 */
+  article h2 + img {
+    width: 100%;        
+    height: auto;       
+    max-height: 80vh;    
+    display: block;
+    margin: 0 auto;
+    object-fit: contain; 
+  }
 
-    article h2 {
-        font-size: 1.2em;
-    }
+  /*Especificidad 002 */
+  article h2 {
+    font-size: 1.2em;
+  }
 }
   

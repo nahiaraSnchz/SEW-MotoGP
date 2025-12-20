@@ -122,13 +122,13 @@ def main():
     # Imagen si existe
     if 'foto' in data:
         html.add_section("Imagen del circuito")
-        html.content.append(f'<img src="{data["foto"]}" alt="Imagen del circuito" style="max-width:100%;height:auto;">')
+        html.content.append(f'<img src="{data["foto"]}" alt="Imagen del circuito" >')
         html.end_section()
 
     # Video si existe
     if 'video' in data:
         html.add_section("Video del circuito")
-        html.content.append(f'<video controls style="max-width:100%;height:auto;"><source src="../multimedia/{data["video"]}" type="video/mp4">Tu navegador no soporta video.</video>')
+        html.content.append(f'<video controls><source src="{data["video"]}" type="video/mp4">Tu navegador no soporta video.</video>')
         html.end_section()
 
     # Sección de resultados

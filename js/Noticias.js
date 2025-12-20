@@ -69,7 +69,6 @@ class Noticias {
         $contenedor.append($("<h2>").text(`Noticias de MotoGP`));
 
         noticias.forEach(noticia => {
-            // Creamos un div por cada noticia
             let noticiaSec = $("<section>").addClass("noticia");
 
             noticiaSec.append($("<h3>").text(noticia.titulo));
