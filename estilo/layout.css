@@ -125,9 +125,27 @@ textarea {
     object-fit: contain; 
   }
 
+  video {
+    width: 100%;        
+    height: auto;       
+    max-height: 80vh;    
+    display: block;
+    margin: 0 auto;
+    object-fit: contain; 
+  }
+
   /*Especificidad 002 */
   article h2 {
     font-size: 1.2em;
+  }
+
+  /* Especificidad 001 */
+  video {
+    width: 100%;       /* Ocupa todo el ancho disponible en móvil */
+    height: auto;      /* Mantiene la proporción original */
+    max-height: 60vh;  /* Evita que el video sea demasiado alto en la pantalla */
+    display: block;
+    margin: 1em auto;
   }
 }
   
