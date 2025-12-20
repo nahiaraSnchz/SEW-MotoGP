@@ -122,7 +122,7 @@ def main():
     # Imagen si existe
     if 'foto' in data:
         html.add_section("Imagen del circuito")
-        html.content.append(f'<img src="../multimedia/{data["foto"]}" alt="Imagen del circuito" style="max-width:100%;height:auto;">')
+        html.content.append(f'<img src="{data["foto"]}" alt="Imagen del circuito" style="max-width:100%;height:auto;">')
         html.end_section()
 
     # Video si existe
