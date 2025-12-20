@@ -324,6 +324,57 @@
             }
         }
 
+        public function importarBaseDatosCSV($ruta) {
+            $this->conexion->select_db($this->dbname);
+            
+            // Mapeo rápido de dispositivos
+            $dispositivos = [];
+            $res = $this->conexion->query("SELECT dispositivoId, nombre FROM DISPOSITIVO");
+            while ($d = $res->fetch_assoc()) {
+                $dispositivos[mb_strtolower(trim($d['nombre']))] = $d['dispositivoId'];
+            }
+
+            $f = fopen($ruta, 'r');
+            fread($f, 3); // Saltar BOM
+            fgetcsv($f, 1000, ";"); // Saltar cabecera
+
+            $this->conexion->begin_transaction();
+            $count = 0;
+
+            try {
+                $sU = $this->conexion->prepare("INSERT INTO USER_INFO (profesion, edad, genero, periciaInformatica) VALUES (?,?,?,?)");
+                $sR = $this->conexion->prepare("INSERT INTO RESULTADO (userId, dispositivoId, tiempoRealizacion, completada, comentario, propuestaMejora, valoracion) VALUES (?,?,?,?,?,?,?)");
+                $sO = $this->conexion->prepare("INSERT INTO OBSERVACION (resultadoId, comentario) VALUES (?,?)");
+
+                while (($d = fgetcsv($f, 1000, ";")) !== FALSE) {
+                    if (count($d) < 10) continue;
+                    $d = array_map('trim', $d);
+
+                    $sU->bind_param("sisi", $d[0], $d[1], $d[2], $d[3]);
+                    $sU->execute();
+                    $uId = $this->conexion->insert_id;
+
+                    $dispId = $dispositivos[mb_strtolower($d[4])] ?? 1;
+                    $comp = (mb_stripos($d[6], 'S') === 0) ? 1 : 0;
+
+                    $sR->bind_param("iidissi", $uId, $dispId, $d[5], $comp, $d[7], $d[8], $d[9]);
+                    $sR->execute();
+                    $rId = $this->conexion->insert_id;
+
+                    if (!empty($d[10])) {
+                        $sO->bind_param("is", $rId, $d[10]);
+                        $sO->execute();
+                    }
+                    $count++;
+                }
+                $this->conexion->commit();
+                return "Importados $count registros.";
+            } catch (Exception $e) {
+                $this->conexion->rollback();
+                return "Error: " . $e->getMessage();
+            }
+        }
     }
+    
 
 ?>
