@@ -118,8 +118,7 @@ textarea {
   /*Especificidad 003 */
   article h2 + img {
     width: 100%;        
-    height: auto;       
-    max-height: 80vh;    
+    height: auto;  
     display: block;
     margin: 0 auto;
     object-fit: contain; 
