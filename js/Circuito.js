@@ -36,8 +36,10 @@ class Circuito {
         this.#inputSection.append($titulo);
         // Crear el input
         // Se le asocia una etiqueta para mejor accesibilidad
-        const $label = $('<label for="input-html">Seleccione el archivo HTML del circuito:</label>');
-        const $input = $('<input type="file" id="input-html" accept=".html">');
+        const $label = $('<label>Seleccione el archivo HTML del circuito:</label>');
+        const $input = $('<input type="file" accept=".html">');
+
+        $label.append($input);
 
         $input.on('change', (event) => {
             const archivo = event.target.files[0];
@@ -61,7 +63,7 @@ class Circuito {
             lector.readAsText(archivo);
         });
 
-        this.#inputSection.append($label).append($input);
+        this.#inputSection.append($label);
 
         $("main h2").first().after(this.#inputSection);
     }
@@ -129,8 +131,10 @@ class CargadorSVG {
         $inputSection.append($titulo);
 
         // Se le asocia una etiqueta para mejor accesibilidad
-        const $label = $('<label for="input-svg">Seleccione el archivo SVG del circuito:</label>');
-        const $input = $('<input type="file" id="input-svg" accept=".svg">');
+        const $label = $('<label>Seleccione el archivo SVG del circuito:</label>');
+        const $input = $('<input type="file" accept=".svg">');
+
+        $label.append($input);
 
         $input.on("change", (event) => {
             const archivo = event.target.files[0];
@@ -166,7 +170,7 @@ class CargadorSVG {
             lector.readAsText(archivo);
         });
 
-        $inputSection.append($label).append($input);
+        $inputSection.append($label);
         $("main").append($inputSection); // Se añade el section al body para que quede separado
     }
     
@@ -220,10 +224,11 @@ class CargadorKML {
         $inputSection.append($titulo);
 
         // Se le asocia una etiqueta para mejor accesibilidad
-        const $label = $('<label for="input-kml">Seleccione el archivo KML del circuito:</label>');
-        const $input = $('<input type="file" id="input-kml" accept=".kml">');
+        const $label = $('<label>Seleccione el archivo KML del circuito:</label>');
+        const $input = $('<input type="file" accept=".kml">');
 
-        $inputSection.append($label).append($input);
+        $label.append($input);
+        $inputSection.append($label);
         
         // Crear contenedor para el mapa
         this.#contenedor = document.createElement("div");
@@ -269,7 +274,7 @@ class CargadorKML {
         });
     }
 
-    inicializarMapa() {
+    /* inicializarMapa() {
         if (!this.#puntos.length) return;
         
         const MI_MAP_ID = "ffc769ded9d9bada65851b32"; 
@@ -302,13 +307,52 @@ class CargadorKML {
         // Crear marcadores
         this.#puntos.forEach(p => {
             // Usar AdvancedMarkerElement en lugar del antiguo Marker
-            new google.maps.marker.AdvancedMarkerElement({ // <--- CORRECCIÓN CLAVE
+            new google.maps.marker.AdvancedMarkerElement({
                 map: this.#mapa,
                 position: p,
                 title: "Punto de ruta"
             });
         });
-    }
+    } */
+
+        async inicializarMapa() {
+            if (!this.#puntos.length) return;
+
+            const MI_MAP_ID = "ffc769ded9d9bada65851b32"; 
+
+            const bounds = new google.maps.LatLngBounds(); 
+            this.#puntos.forEach(p => bounds.extend(p)); 
+
+            // 2. Creamos el mapa con el ID de demo
+            this.#mapa = new google.maps.Map(this.#contenedor, {
+                mapId: MI_MAP_ID,
+                center: this.#puntos[0],
+                zoom: 12
+            });
+
+            this.#mapa.fitBounds(bounds);
+
+            // 3. Dibujamos la línea de la ruta
+            const trazo = new google.maps.Polyline({
+                path: this.#puntos,
+                geodesic: true,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            });
+            trazo.setMap(this.#mapa);
+
+            // 4. Cargamos la librería de marcadores y los añadimos (Forma moderna)
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+            this.#puntos.forEach(p => {
+                new AdvancedMarkerElement({
+                    map: this.#mapa,
+                    position: p,
+                    title: "Punto de ruta"
+                });
+            });
+        }
 }
 
 $(function() {
