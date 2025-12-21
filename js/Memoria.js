@@ -10,7 +10,8 @@
             this.#tablero_bloqueado = true;
             this.#primera_carta = null;
             this.#segunda_carta = null;
-            this.#cronometro = new Cronometro();
+            const pantallaJuego = document.querySelector("main p");
+            this.#cronometro = new Cronometro(pantallaJuego);
             this.barajarCartas();
             this.#tablero_bloqueado = false;
             this.#cronometro.arrancar();

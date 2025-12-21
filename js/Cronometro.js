@@ -77,9 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const botones = document.querySelectorAll("main button");
     const cronometro = new Cronometro(pantalla);
 
-    botones[0].addEventListener('click', () => cronometro.arrancar());
-    botones[1].addEventListener('click', () => cronometro.parar());
-    botones[2].addEventListener('click', () => cronometro.reiniciar());
+    if (botones.length >= 3) {
+        botones[0].addEventListener('click', () => cronometro.arrancar());
+        botones[1].addEventListener('click', () => cronometro.parar());
+        botones[2].addEventListener('click', () => cronometro.reiniciar());
+        
+        console.log("Listeners asignados correctamente.");
+    }
     
-    console.log("Listeners asignados correctamente.");
 });
