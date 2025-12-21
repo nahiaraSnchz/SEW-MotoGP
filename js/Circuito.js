@@ -24,14 +24,14 @@ class Circuito {
         return this.#soportaFile;
     }
 
-    // Método para leer un archivo HTML mediante un input
+    // Metodo para leer un archivo HTML mediante un input
     leerArchivoHTML() {
         if (!this.#soportaFile) return;
 
         // Crear un section para el input y el título
         this.#inputSection = $('<section></section>');
 
-        // Crear el título h3
+        // Crear el titulo h3
         const $titulo = $('<h3>Introduzca archivo HTML:</h3>');
         this.#inputSection.append($titulo);
         // Crear el input
@@ -274,27 +274,24 @@ class CargadorKML {
         });
     }
 
-    /* inicializarMapa() {
+    async inicializarMapa() {
         if (!this.#puntos.length) return;
-        
+
         const MI_MAP_ID = "ffc769ded9d9bada65851b32"; 
-    
+
         const bounds = new google.maps.LatLngBounds(); 
+        this.#puntos.forEach(p => bounds.extend(p)); 
 
-        // 2. Iterar sobre los puntos y extender los límites
-        this.#puntos.forEach(p => {
-            bounds.extend(p); 
-        });
-
-        // Crear el mapa
+        // 2. Creamos el mapa con el ID de demo
         this.#mapa = new google.maps.Map(this.#contenedor, {
-            mapId: MI_MAP_ID
+            mapId: MI_MAP_ID,
+            center: this.#puntos[0],
+            zoom: 12
         });
 
-        //  mapa se ajusta a los límites calculados
         this.#mapa.fitBounds(bounds);
 
-        // Dibujar polilínea
+        // 3. Dibujamos la línea de la ruta
         const trazo = new google.maps.Polyline({
             path: this.#puntos,
             geodesic: true,
@@ -304,55 +301,17 @@ class CargadorKML {
         });
         trazo.setMap(this.#mapa);
 
-        // Crear marcadores
+        // 4. Cargamos la librería de marcadores y los añadimos (Forma moderna)
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
         this.#puntos.forEach(p => {
-            // Usar AdvancedMarkerElement en lugar del antiguo Marker
-            new google.maps.marker.AdvancedMarkerElement({
+            new AdvancedMarkerElement({
                 map: this.#mapa,
                 position: p,
                 title: "Punto de ruta"
             });
         });
-    } */
-
-        async inicializarMapa() {
-            if (!this.#puntos.length) return;
-
-            const MI_MAP_ID = "ffc769ded9d9bada65851b32"; 
-
-            const bounds = new google.maps.LatLngBounds(); 
-            this.#puntos.forEach(p => bounds.extend(p)); 
-
-            // 2. Creamos el mapa con el ID de demo
-            this.#mapa = new google.maps.Map(this.#contenedor, {
-                mapId: MI_MAP_ID,
-                center: this.#puntos[0],
-                zoom: 12
-            });
-
-            this.#mapa.fitBounds(bounds);
-
-            // 3. Dibujamos la línea de la ruta
-            const trazo = new google.maps.Polyline({
-                path: this.#puntos,
-                geodesic: true,
-                strokeColor: "#FF0000",
-                strokeOpacity: 1.0,
-                strokeWeight: 2
-            });
-            trazo.setMap(this.#mapa);
-
-            // 4. Cargamos la librería de marcadores y los añadimos (Forma moderna)
-            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-            this.#puntos.forEach(p => {
-                new AdvancedMarkerElement({
-                    map: this.#mapa,
-                    position: p,
-                    title: "Punto de ruta"
-                });
-            });
-        }
+    }
 }
 
 $(function() {
