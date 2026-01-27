@@ -277,7 +277,7 @@ class CargadorKML {
     async inicializarMapa() {
         if (!this.#puntos.length) return;
 
-        const MI_MAP_ID = "ffc769ded9d9bada65851b32"; 
+        const MI_MAP_ID = "MY_MAP_ID"; 
 
         const bounds = new google.maps.LatLngBounds(); 
         this.#puntos.forEach(p => bounds.extend(p)); 
