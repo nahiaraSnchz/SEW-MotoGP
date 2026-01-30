@@ -7,7 +7,7 @@ class Noticias {
     constructor(busqueda) {
         this.#busqueda = busqueda;
         this.#url = "https://api.thenewsapi.com/v1/news/all";
-        this.#apiKey = "IO83AMZM1KVoyy9qyyOfB81JBmCayHMr91sCIuSk";
+        this.#apiKey = "API_KEY";
     }
 
     // Método público para obtener la búsqueda
